@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{fancybox} 
+\usepackage{amssymb}
+\usepackage{charter}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\setlength{\textwidth}{7in}
+\setlength{\evensidemargin}{-0.24in}
+\setlength{\oddsidemargin}{-0.24in}
+\setlength{\textheight}{9.45in}
+\setlength{\topmargin}{-0.45in}
+\setlength{\parindent}{0.3in}
+\headheight12pt
+\headsep16pt
+\pagestyle{myheadings}
+\newcounter{ques}
+\newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
+
+\begin{document} 
+
+\begin{center} \large\bf
+COMP 3804/MATH 3804\\
+Design and Analysis of Algorithms I  - 
+Fall  2021\\
+Assignment 2
+\end{center} 
+
+Hand in your assignments on, or before 
+Oct $23^{rd}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+typically posing (correctness, complexity and improvement potential).
+The faster your 
+algorithm, the better your mark.     \\
+
+\vspace{1em} 
+
+\begin{question}[10 points]\\
+Consider you are given a heap, called $n-$heap, on $n=28$ elements and a heap, called $k-$heap, on k=9  elements. Show the 
+ descriptors for the pennant forests correspoding to the two heaps. Show the descriptor for the pennant forest for the heap, called $n+k-$heap,
+resulting from applying the operation merge two heaps discussed in class (see also the paper on the course web-page). Illustrate, step by step,  how the merge operations works, if we are only! concerned about
+the heap shape, i.e., NOT the heap order.
+    
+\end{question} 
+
+\begin{question}[10 points]\\ 
+The linear-time algorithm for selection discussed in class groups the n input elements into $n/5$ groups of $5$ elements each. Does a grouping into 
+$n/9$ groups of $9$ elements each, or $n/3$ groups of $3$ elements each, work? Argue exactly why, or why not, by reworking for these two instances the analysis carried 
+out in class.
+\end{question} 
+
+\begin{question}[10 points]\\  
+Suppose you want to support the operation DeleteAnyElement(pointer into the heap to the element to be deleted) in a heap. You must do this efficiently. 
+Describe your algorithm in sufficent and establish its correctness. 
+
+\end{question} 
+\begin{question}[10 points]\\  
+Consider a permutation of the numbers 1, ..., n as input to the following algorithm:\\
+
+\noindent Initialize an empty stack;
+
+\noindent {\bf For} each input value x:
+
+\indent	{\bf While} the stack is nonempty and x is larger than the top item on the stack {\bf do}
+
+\indent \indent  pop the stack to the output
+
+\indent	Push x onto the stack
+
+\noindent {\bf While} the stack is nonempty {\bf  do} pop it to the output\\
+
+%\begin{itemize}
+%\item
+What  is the sequence of POP/PUSH operations executed on input permutations:
+
+a) 3214   b) 4123  ?
+
+%\item
+Find all permutations  of 4 input elements that the algorithm does not sort correctly?
+What happens in this case? Characterize the permutations (i.e., see a pattern) in your own words?
+
+%\item
+%How many  permutations on 2, 3, 4 and numbers does the algorithm sort correctly?
+%Is this number familiar to you? If so, what is the number?
+
+%\item
+%Establish a 1-1 correspondence between the set of permutations that can be sorted
+%via this above algorithm and (valid) bracket sequences? State this correspondence formally.
+
+%\end{itemize}
+
+\end{question} 
+
+ \newpage
+
+ \begin{question}[10 points]\\ 
+
+ \begin{enumerate}
+ 	\item
+ 	Suppose we want to find the minimum spanning tree of the graph shown below on Figure~\ref{fig:MSTgraph}. Run Prim's algorithm; whenever there is a choice of nodes, always use alphabetic ordering (e.g., start from node A). Draw a table showing the intermediate values of the cost array. 
+ 	\item Run Kruskal's algorithm on the same graph. Show how the disjoint-sets data structure looks at every intermediate stage (including the structure of the directed trees), assuming path compression is used. 
+ \end{enumerate}
+ 
+	
+\end{question} 
+
+ 
+	\begin{figure}
+		\centerline{\resizebox{!}{0.25\textwidth}{\includegraphics{MSTExample.pdf}}}
+		\caption{Input graph for Question 5}
+		\label{fig:MSTgraph}
+	\end{figure}
+
+\end{document} 
