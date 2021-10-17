@@ -6,6 +6,7 @@
 \usepackage{charter}
 \usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{amsmath}
 \setlength{\textwidth}{7in}
 \setlength{\evensidemargin}{-0.24in}
 \setlength{\oddsidemargin}{-0.24in}
@@ -66,7 +67,52 @@ Next, we need two pennants of size 2. We can notice that once again, we have two
 \begin{question}[10 points]\\
 The linear-time algorithm for selection discussed in class groups the n input elements into $n/5$ groups of $5$ elements each. Does a grouping into
 $n/9$ groups of $9$ elements each, or $n/3$ groups of $3$ elements each, work? Argue exactly why, or why not, by reworking for these two instances the analysis carried
-out in class.
+out in class.\\\\
+
+Yes, it would still work. This is because we are splitting up the input to conduct multiple operations in constant time.\\\\
+
+We will begin by explaining the steps required in order to execute the algorithm on a set where there are $\lceil\frac{n}{9}\rceil$ partitions of size 9.\\
+The first step, of course, would be to partition the set into $\lceil\frac{n}{9}\rceil$ smaller sets. This would simply be $O(1)$ time, due to the fact that it is a very rudimentary operation.\\
+Next, we would then sort each of the partitions. Since there are $\lceil\frac{n}{9}\rceil$ partitions and each sorting is done in $O(1)$ time, the total time taken for that operation would be $O(1)\cdot\frac{n}{9}$\\
+Then, we want to find the median of the medians (called $x$), and since we have $\frac{n}{9}$ medians, this would take $\frac{n}{9}$ steps.\\
+Then, we want to partition the input array around $x$.
+We will let  $j=1+$ The number of elements less than $x$, and we will call that set $S_L$
+We will also let put all of the remaining elements (which are greater than or equal to $x$) in a set $S_R$.
+basically, we'll be setting it in a way where all of the partitions to the left are lesser than the median of medians, and the partitions to the right are greater than the median of medians.\\
+So, now we know that all of the elements that are lesser than the medians to the left are going to be lesser than $x$.\\
+Additionally, we now know that all of the elements greater than the partitions that are to the right are going to be greater than the median of medians.
+So, for all the groups to the right, 5 of the elements will definitively be greater than $x$, and in the group that contains $x$, 4 elements will be greater than it.\\
+The amount of groups that will be on the right side will be $\lceil\frac{n}{18}$.
+We will want to "throw out" a constant number of elements each time we recurse on the sets. Since we know that there will always be 5 elements that will be greater than $x$ in $S_R$, except for the partition that contains $x$, as well as the last partition, if the input list is not a multiple of 9. So, a conservative estimate would show us that we will be able to "throw out" $5(\lceil\frac{n}{18}\rceil-2)$ elements for each iteration of the algorithm. Therefore, we have:
+$$5(\left\lceil\frac{n}{18}\right\rceil-2)>\frac{5n}{10}-10=\frac{n}{2}-10$$
+And this means that when we call the algorithm again, instead of executing it on $n$ elements, we will be executing it on
+$$n-\left(\frac{n}{2}-10\right)=\frac{n}{2}+10$$
+Then, we can show the following:
+\begin{align*}
+  T(n) &\geq c\cdot\left\lceil\frac{n}{9}\right\rceil + c\left(\frac{n}{2}+10\right)+O(n)\\
+       &< \frac{cn}{9} + c + \frac{cn}{2} + 10c + O(n)\\
+       &< \frac{11cn}{18} + 11c + O(n)\\
+       &< c\cdot n \text{    For some $c$.}\\
+       &  \text{Which, by definition is } O(n).
+\end{align*}
+Next, we want to show the same thing, except for partitions of size $3$ rather than of size $9$. Since the explanation will be extremely similar, we will avoid repetition for the sake of avoiding redundancy. We will begin by noting the following:\\
+\begin{enumerate}
+  \item We will partition the set into $\frac{n}{3}$ subsets of size $3$, and find their medians.
+  \item For subsets that we "throw out" when recursing, each partition to the right of the partition containing $x$ will have two elements that are greater than $x$, exept for the last one if the set is not a multiple of 3.
+\end{enumerate}
+This means that we can begin the process with the same equations we had before, but with slightly different numbers. We can show that for each iteration, we will be throwing out $2(\lceil\frac{n}{6}\rceil-2)$ elements, which we can write as:
+$$2(\left\lceil\frac{n}{6}\right\rceil-2)>\frac{2n}{6}-4=\frac{n}{3}-4$$
+And so, removing that many elements, we know that we will be recursing on a set of size
+$$n-(\frac{n}{3}-4)=\frac{2n}{3}+4$$
+Next, we can continue like so:
+\begin{align*}
+  T(n) &\geq c\cdot\left\lceil\frac{n}{6}\right\rceil+c\left(\frac{2n}{3}+4\right)+O(n)\\
+       &< \frac{cn}{6}+c+\frac{2cn}{3}+4c+O(n)\\
+       &< \frac{5cn}{6}+5c+O(n)\\
+       &< c\cdot n \text{    For some $c$.}\\
+       &  \text{Which, by definition is } O(n).
+\end{align*}
+So, we have successfully shown that the Selection algorithm discussed in class also works if the elements were grouped into partitions of size 3 or 9 instead of size 5.
 \end{question}
 
 \begin{question}[10 points]\\
