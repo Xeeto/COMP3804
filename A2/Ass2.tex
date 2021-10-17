@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{fullpage}
-\usepackage{fancybox} 
+\usepackage{fancybox}
 \usepackage{amssymb}
 \usepackage{charter}
 \usepackage{verbatim}
@@ -18,43 +18,63 @@
 \newcounter{ques}
 \newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
 
-\begin{document} 
+\begin{document}
 
 \begin{center} \large\bf
 COMP 3804/MATH 3804\\
-Design and Analysis of Algorithms I  - 
+Design and Analysis of Algorithms I  -
 Fall  2021\\
-Assignment 2
-\end{center} 
+Assignment 2\\
+Félix Cardinal Tremblay - 101141593
+\end{center}
 
-Hand in your assignments on, or before 
-Oct $23^{rd}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+Hand in your assignments on, or before
+Oct $23^{rd}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are
 typically posing (correctness, complexity and improvement potential).
-The faster your 
+The faster your
 algorithm, the better your mark.     \\
 
-\vspace{1em} 
+\vspace{1em}
 
 \begin{question}[10 points]\\
-Consider you are given a heap, called $n-$heap, on $n=28$ elements and a heap, called $k-$heap, on k=9  elements. Show the 
+Consider you are given a heap, called $n-$heap, on $n=28$ elements and a heap, called $k-$heap, on k=9  elements. Show the
  descriptors for the pennant forests correspoding to the two heaps. Show the descriptor for the pennant forest for the heap, called $n+k-$heap,
 resulting from applying the operation merge two heaps discussed in class (see also the paper on the course web-page). Illustrate, step by step,  how the merge operations works, if we are only! concerned about
-the heap shape, i.e., NOT the heap order.
-    
-\end{question} 
+the heap shape, i.e., NOT the heap order.\\\\
 
-\begin{question}[10 points]\\ 
-The linear-time algorithm for selection discussed in class groups the n input elements into $n/5$ groups of $5$ elements each. Does a grouping into 
-$n/9$ groups of $9$ elements each, or $n/3$ groups of $3$ elements each, work? Argue exactly why, or why not, by reworking for these two instances the analysis carried 
+We will begin by analyzing the pennants of the 28-heap, in order to find the descriptor.\\
+First, we must find the height of the tree, as well as which side will have a "complete" pennant. By calculating $log(28)=4.81$, we can see that since $4.81>4.5$, the last node must be on the right side of the tree, and so the left side of the tree will be a complete pennant. We then want to find the height of this tree, to calculate how many nodes it will have. Since $\lfloor log(28)\rfloor=4$, we know that the subtree must have a height of 3 (because the $0^{th}$ layer is the single node at the top of the pennant). Then, since our subtree has a height of 3, we know from class that the full pennant must have $2^{n+1}$ nodes where $n$ is the height of the tree, and thus we can currently show our descriptor as : $(1,\_,\_,\_,\_)$.\\
+Next, we will look at the left subtree. This will be a tree containing $28-16=12$ nodes, and so we can do $log(12)=3.58$, and now we know that the left side of the tree will once again be a full pennant. The height of the subtree (not including the top node of the pennant) will be 2, and so the total amount of nodes in that subtree will be $2^{3}$. Now, our descriptor looks likes the following: $(1,1,\_,\_,\_)$\\
+The next subtree has a size of $12-8=4$. Since 4 is a relatively small number, it is very easy to visualize the remainder of the question. A heap with four nodes will have one node in the top layer, two nodes in the layer below that, and one node in the leftmost position in the last layer. Therefore, we can see that there will be a pennant of size two consisting of the top node and the rightmost node, and two single-node pennants consisting of the last two nodes. Therefore, our final descriptor for the $28$-heap will be:
+$$(1,1,0,1,2)$$
+
+Next, we need to analyze the 9-heap. We can begin by seeing that $log(9)=3.2$. Therefore, the subtree on the right of the heap (not counting the node at the top of the pennant) will have a height of one (since there are no nodes on the last level of the tree on the right side), and so including the pennant, there will be $2^{n+1}=2^2$ nodes in this subtree, where $n$ is the height of the tree. We know have a descriptor in the following form: $(1,\_,\_)$.\\
+Now, we can look at the left side of the heap, which has $9-4=5$ nodes. Again, this tree is quite trivial to visualize, and so we know that the top-most and right-most nodes will create a pennant of size two, and the final three nodes will create a pennant of size two and a pennant of size one. Therefore, our final descriptor will be
+$$(1,2,1)$$\\\\
+
+Now, we must show the descriptor for the $37-$heap.
+First, we want to find the first side of the heap that we can use to create the pennant. We know that $log(37)=5.2$, so we'll be looking at the right side of the heap to create the first pennant. Not including the first node of the pennant, it will have a height of 3 (due to the fact that on the right side, there are no nodes on the bottom-most layer of the tree), and so including the pennant, it will contain $2^4$ nodes. Thus, our descriptor will now be $(1,\_,\_,\_,\_)$\\
+Next, we will look a the subtree of size $37-16=21$. Since $log(21)=4.39$, we know that the right side will once again have a pennant. Thus, we can see that the bottom layer of the right side of the tree will once again not have any leaves, and so the subtree (not including the pennant) will have a height of 2. Therefore, the entire pennant must have $2^3$ nodes. Thus, our descriptor is now $(1,1,\_,\_,\_)$\\
+The next subtree will have $21-8=13$ nodes, and so we can show that $log(13)=3.7$, and so the left side will have a full pennant. The subtree of the pennant will have a height of 2, and so it will contain $2^3$ nodes. Thus, our descriptor is now $(1,2,\_,\_,\_)$.\\
+Next, we will be examining a subtree with $13-8=5$ nodes. We've already examined one of this size in the previous parts of the question, so we know that it will have two pennents of size two, and one of size one. Therefore, our final descriptor for the pennant forest is:
+$$(1,2,0,2,1)$$
+Now, we must build the $37-$heap tree using the pennants we have found from the $28-$heap and the $9-$heap, and to do so we will process the $37-$heap's descriptor from right to left.\\
+First, we see that there is a single pennant of size $2^0$. We know that there is one pennant of size 1 in the in the $9-$heap and two nodes of size 1 in the $28-$heap, and so we could take them from either heaps arbitrarily. We will take it from the $9-$heap, however the same process would work if we were to take it from the other heap.\\
+Next, we need two pennants of size 2. We can notice that once again, we have two in the $9-$heap, and so we will use those ones, although we could again use either of them arbitrarily. Now, we need pennants of size 8 and 16, however we have leftover pennants, and so we can merge them to create those. We merge take the two pennants of size 1 and the pennant of size 2 from the $28-$heap to create a pennant of size 4. Then, we will merge this new pennant with the pennant of size 4 in the $9-$heap, to create a pennant of size 8. We now notice that we have a pennant of size 8 from the $28-$heap, a well as another pennant of size 8 that we have just created by merging smaller pennants. Since we need two pennants of size 8 in the $37-$heap, we can use these two. Lastly, we need a pennant of size 16, and we have a single pennant of size 16 in the $28-$heap. By using this final pennant, we have used all of the pennants, and successfully created the $37-$heap by merging a $9-$heap and a $28-$heap in a very efficient way.
+\end{question}
+
+\begin{question}[10 points]\\
+The linear-time algorithm for selection discussed in class groups the n input elements into $n/5$ groups of $5$ elements each. Does a grouping into
+$n/9$ groups of $9$ elements each, or $n/3$ groups of $3$ elements each, work? Argue exactly why, or why not, by reworking for these two instances the analysis carried
 out in class.
-\end{question} 
+\end{question}
 
-\begin{question}[10 points]\\  
-Suppose you want to support the operation DeleteAnyElement(pointer into the heap to the element to be deleted) in a heap. You must do this efficiently. 
-Describe your algorithm in sufficent and establish its correctness. 
+\begin{question}[10 points]\\
+Suppose you want to support the operation DeleteAnyElement(pointer into the heap to the element to be deleted) in a heap. You must do this efficiently.
+Describe your algorithm in sufficent and establish its correctness.
 
-\end{question} 
-\begin{question}[10 points]\\  
+\end{question}
+\begin{question}[10 points]\\
 Consider a permutation of the numbers 1, ..., n as input to the following algorithm:\\
 
 \noindent Initialize an empty stack;
@@ -89,26 +109,26 @@ What happens in this case? Characterize the permutations (i.e., see a pattern) i
 
 %\end{itemize}
 
-\end{question} 
+\end{question}
 
  \newpage
 
- \begin{question}[10 points]\\ 
+ \begin{question}[10 points]\\
 
  \begin{enumerate}
  	\item
- 	Suppose we want to find the minimum spanning tree of the graph shown below on Figure~\ref{fig:MSTgraph}. Run Prim's algorithm; whenever there is a choice of nodes, always use alphabetic ordering (e.g., start from node A). Draw a table showing the intermediate values of the cost array. 
- 	\item Run Kruskal's algorithm on the same graph. Show how the disjoint-sets data structure looks at every intermediate stage (including the structure of the directed trees), assuming path compression is used. 
+ 	Suppose we want to find the minimum spanning tree of the graph shown below on Figure~\ref{fig:MSTgraph}. Run Prim's algorithm; whenever there is a choice of nodes, always use alphabetic ordering (e.g., start from node A). Draw a table showing the intermediate values of the cost array.
+ 	\item Run Kruskal's algorithm on the same graph. Show how the disjoint-sets data structure looks at every intermediate stage (including the structure of the directed trees), assuming path compression is used.
  \end{enumerate}
- 
-	
-\end{question} 
 
- 
+
+\end{question}
+
+
 	\begin{figure}
 		\centerline{\resizebox{!}{0.25\textwidth}{\includegraphics{MSTExample.pdf}}}
 		\caption{Input graph for Question 5}
 		\label{fig:MSTgraph}
 	\end{figure}
 
-\end{document} 
+\end{document}
