@@ -135,26 +135,45 @@ Consider a permutation of the numbers 1, ..., n as input to the following algori
 
 \noindent {\bf While} the stack is nonempty {\bf  do} pop it to the output\\
 
-%\begin{itemize}
-%\item
+
 What  is the sequence of POP/PUSH operations executed on input permutations:
 
 a) 3214   b) 4123  ?
 
-%\item
+
 Find all permutations  of 4 input elements that the algorithm does not sort correctly?
 What happens in this case? Characterize the permutations (i.e., see a pattern) in your own words?
 
-%\item
-%How many  permutations on 2, 3, 4 and numbers does the algorithm sort correctly?
-%Is this number familiar to you? If so, what is the number?
+\textbf{a)}
+The sequence would be as follows:
+\begin{itemize}
+  \item First, the 3 will be pushed onto the empty stack.
+  \item Then, the 2 will be pushed onto the stack since $2<3$.
+  \item Then, the 1 will be pushed onto the stack since $1<2$
+  \item Then,  since $4> 3$, 2 and 1, we will pop 1, then 2, then 3 onto the stack.
+  \item Then, 4 will be pushed into the newly empty stack, and popped unto the output, which will properly sort the permutation.
+\end{itemize}
 
-%\item
-%Establish a 1-1 correspondence between the set of permutations that can be sorted
-%via this above algorithm and (valid) bracket sequences? State this correspondence formally.
+\textbf{b)}
+The sequence would be as follows:
+\begin{itemize}
+  \item First, the 4 will be pushed onto the empty stack.
+  \item Then, since $1<4$, 1 will be popped to the output.
+  \item Then, since $2<4$, 2 will be popped to the output.
+  \item Then, since we have gone through the inputted permutation, 4 will be popped onto the output, which will properly sort the input.
+\end{itemize}\\
 
-%\end{itemize}
+\textbf{Permutations that are not sorted correctly:}\\
+\begin{center}
+  \begin{matrix}
+    &1342 &2341 &2313 &2413 &2431\\
+    &3142 &3241 &3412 &3421 &1342
+  \end{matrix}
+\end{center}
+\\
 
+\textbf{Characterization of the permutations:}\\
+There must be at least one ascending pair of neightbours whre the first number of that pair cannot be the $nth$ value (where $n=$ the position of the larger value of the most recent ascending pair)
 \end{question}
 
  \newpage

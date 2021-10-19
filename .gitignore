@@ -1,5 +1,7 @@
 /3rd-edition-solutions
 /lectures
+/A2/Q4_Code/.idea
+/A2/Q4_Code/out
 *.pdf
 *.aux
 *.fdb_latexmk
