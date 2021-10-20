@@ -161,19 +161,31 @@ The sequence would be as follows:
   \item Then, since $1<4$, 1 will be popped to the output.
   \item Then, since $2<4$, 2 will be popped to the output.
   \item Then, since we have gone through the inputted permutation, 4 will be popped onto the output, which will properly sort the input.
-\end{itemize}\\
+\end{itemize}
 
 \textbf{Permutations that are not sorted correctly:}\\
-\begin{center}
+\begin{center}$
   \begin{matrix}
     &1342 &2341 &2313 &2413 &2431\\
-    &3142 &3241 &3412 &3421 &1342
-  \end{matrix}
+    &3142 &3241 &3412 &3421 &4321
+  \end{matrix}$
 \end{center}
-\\
+
 
 \textbf{Characterization of the permutations:}\\
-There must be at least one ascending pair of neightbours whre the first number of that pair cannot be the $nth$ value (where $n=$ the position of the larger value of the most recent ascending pair)
+Let two consecutive numbbers of a permutation be a pair.\\
+
+There must be at least one ascending pair where the first number of that pair cannot be the $nth$ value (where $n=$ the position of the larger value of the previous ascending pair)
+
+
+There must be at least one ascending pair where the first number of that pair cannot be equal to $n+1$ (where $n=$ the lesser value of the most recent ascending pair. If there is no previous ascending pair, $n=0$). Additionally, if the next ascending pair's first number $=n+2$, then the number to the left of the the first pair's lesser number cannot be $n+1$\\\\
+We will now show an example:\\\\
+if the permutation were 654123, this would be sorted correctly, as the first ascending pair would be "12". $1=n+1=0+1=1$, and so this pair would not cause it to be sorted incorrectly.\\
+The next ascending pair would be "23", and since $2=n+1=1+1=2$, this would once again not cause it to be sorted incorrectly. There are no other ascending pairs in the permutation, and so this would not cause any issues in the algorithm.\\\\
+If instead we were to take the permutation "652134", the first pair would be "13", where we have the same situation as before. However, since the second pair's lesser number $=n+2$ and the number to the left of the first pair's lesser number $=n+1$, this will be sorted without any issues.\\\\
+Finally, if we were to have the permutation "432156"\\\\
+ok both of my answers were wrong LOL\\
+kinda close though, we're getting there
 \end{question}
 
  \newpage
