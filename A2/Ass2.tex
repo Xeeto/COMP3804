@@ -175,17 +175,16 @@ The sequence would be as follows:
 \textbf{Characterization of the permutations:}\\
 Let two consecutive numbbers of a permutation be a pair.\\
 
-There must be at least one ascending pair where the first number of that pair cannot be the $nth$ value (where $n=$ the position of the larger value of the previous ascending pair)
 
 
-There must be at least one ascending pair where the first number of that pair cannot be equal to $n+1$ (where $n=$ the lesser value of the most recent ascending pair. If there is no previous ascending pair, $n=0$). Additionally, if the next ascending pair's first number $=n+2$, then the number to the left of the the first pair's lesser number cannot be $n+1$\\\\
+There must be at least one ascending pair where the first number of that pair cannot be equal to $n+1$ (where $n=$ the lesser value of the most recent ascending pair. If there is no previous ascending pair, $n=0$). Additionally, (if the first ascending pair does not fulfill the previous requirements) if an ascending pair's first number $=n+2$, then the number to the left of the the first pair's lesser number cannot be $n+1$ or $n-1$\\
+Finally, the first number of that pair cannot be the $xth$ value (where $x=$ the position of the larger value of the previous ascending pair) if it is the largest of all previous numbers.\\
 We will now show an example:\\\\
 if the permutation were 654123, this would be sorted correctly, as the first ascending pair would be "12". $1=n+1=0+1=1$, and so this pair would not cause it to be sorted incorrectly.\\
 The next ascending pair would be "23", and since $2=n+1=1+1=2$, this would once again not cause it to be sorted incorrectly. There are no other ascending pairs in the permutation, and so this would not cause any issues in the algorithm.\\\\
 If instead we were to take the permutation "652134", the first pair would be "13", where we have the same situation as before. However, since the second pair's lesser number $=n+2$ and the number to the left of the first pair's lesser number $=n+1$, this will be sorted without any issues.\\\\
-Finally, if we were to have the permutation "432156"\\\\
-ok both of my answers were wrong LOL\\
-kinda close though, we're getting there
+Finally, if we were to have the permutation "7431563", we can see that we have \textbf{1:} we have an ascending pair where the first number is not $n+1$ (as with the pair "56", $n=1$). Then, we have \textbf{2:} $5\neq n+2$, and finally \textbf{3:} since $7>5$, $5$ is not the largest number when compared to all previous numbers.\\\\
+
 \end{question}
 
  \newpage
