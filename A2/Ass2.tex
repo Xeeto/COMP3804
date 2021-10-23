@@ -173,7 +173,10 @@ The element will not have any children, and so it will return, which is correct.
 Now, we will examine a heap of size $n>1$, where $e$ is not a leaf node.\\
 First, we will find which of the children is the smallest (or the only leaf, if there is only one). This is because if we are to switch spots with the smallest of the two children, we know that the new "min" value will be correct. Then, if the current node is smaller than one of its children, we swap it with the smallest of the two. Then, we call \textbf{bubbleDown()} again, which by the inductive hypothesis, must correctly bubble the element down to its correct position in the heap.\\\\
 Now, we can finally prove the correctness of the full algorithm:\\
-First, we replace $e$ with the last element in the tree. This means the element we wanted to delete is now gone, and since we removed the last element, there is no issue with the structure of the tree. This new element may be in the wrong position though. This is fixed by the following \textbf{if-statement}, as if it belongs in a higher position it will be bubbled up, and if it belongs in a lower position, it will be bubbled down. Due to the fact that we have already proven the correctness of these functions, we know that our code must be correct.
+First, we replace $e$ with the last element in the tree. This means the element we wanted to delete is now gone, and since we removed the last element, there is no issue with the structure of the tree. This new element may be in the wrong position though. This is fixed by the following \textbf{if-statement}, as if it belongs in a higher position it will be bubbled up, and if it belongs in a lower position, it will be bubbled down. Due to the fact that we have already proven the correctness of these functions, we know that our code must be correct.\\\\
+\textbf{Runtime analysis:}\\
+The first line simply replaces a value, which is $O(1)$.\\
+Next, either of the bubbleUp or bubbleDown fucntions will be called. These functions work by doing a $O(1)$ operation, and recursively either going up or down a level in the heap. This means that since the depth of the heap is $\lceil log(n)\rceil$, the maximum amount of work done will be $O(log(n))$. Therefore, the total amount of work for \textvf{DeleteAnyElement()} must be at most $O(log(n))
 \end{question}
 
 
