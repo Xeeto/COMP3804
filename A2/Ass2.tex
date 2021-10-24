@@ -254,6 +254,7 @@ if the permutation were 654123, this would be sorted correctly, as the first asc
 The next ascending pair would be "23", and since $2=n+1=1+1=2$, this would once again not cause it to be sorted incorrectly. There are no other ascending pairs in the permutation, and so this would not cause any issues in the algorithm.\\\\
 If instead we were to take the permutation "652134", the first pair would be "13", where we have the same situation as before. However, since the second pair's lesser number $=n+2$ and the number to the left of the first pair's lesser number $=n+1$, this will be sorted without any issues.\\\\
 Finally, if we were to have the permutation "7431563", we can see that we have \textbf{1:} we have an ascending pair where the first number is not $n+1$ (as with the pair "56", $n=1$). Then, we have \textbf{2:} $5\neq n+2$, and finally \textbf{3:} since $7>5$, $5$ is not the largest number when compared to all previous numbers.\\\\
+\textbf{Note:} I answered this question while under the impression that we had to find a pattern in terms of inputs from $1-n$ rather than just $1-4$. This does over-complicate the explanation a bit, however it is still valid.
 
 \end{question}
 
