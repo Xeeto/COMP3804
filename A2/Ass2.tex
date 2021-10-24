@@ -126,57 +126,57 @@ DeleteAnyElement(Element e){
   replace the element with the last element in the heap
                       (removing it from the last position)
   if the new element is less than its parent {
-    bubbleUp(e);
+    trickleUp(e);
   } else if the element is greater than either of its child values{
-    bubbleDown(e);
+    trickleDown(e);
   }
 }
 
-bubbleUp(Element e){
+trickleUp(Element e){
   if the element does not have a parent, return.
 
   if the element's value is lesser than its parent's value {
     switch the element and its parent
-    bubbleUp(e);
+    trickleUp(e);
   }else {
     return;
   }
 }
 
-bubbleDown(element e){
+trickleDown(element e){
   if the element does not have any children, return.
 
   let x = the lesser of the two children of e, or the only child if there is only one
   if e's value is greater than x{
     swap e and x.
-    bubbleDown(e);
+    trickleDown(e);
   }
   else{
     return;
   }
 }
 \end{verbatim}
-We need to prove that our code is correct. We will first prove the functions \textbf{bubbleUp()} and \textbf{bubbleDown()} to be correct. First, we will look at \textbf{bubbleUp():}\\
+We need to prove that our code is correct. We will first prove the functions \textbf{trickleUp()} and \textbf{trickleDown()} to be correct. First, we will look at \textbf{trickleUp():}\\
 \textbf{Base case:}\\
 Let us examine a heap of size 1:\\
 The element passed into the function will be the root node of the heap, and not have any parents. Therefore, our base case is valid.\\\\
 \textbf{Inductive step:}\\
 Now, we will examine a heap of size $n>1$, where $e$ is not a root node.\\
 First, the element will be compared against the value of its parent. If the parent has a lesser value, the function will simply return, which is correct.\\
-If the parent has a greater value, then the elements will will be switched (which is valid since if $e$ is greater than the current max, it must be the max of that subtree), and we will then recursively call \textbf{bubbleUp()}. Since there is one less element to be recursed upon, by the inductive hypothesis we can assume that bubbleUp() will be correct, since the size of the heap that is analyzed will be at least $n-1$. This is because we are only analyzing from $e$ up to the root node.\\
-Therefore, bubbleUp() must be correct.\\\\
-Now, we will prove the correctness of \textbf{bubbleDown():}\\
+If the parent has a greater value, then the elements will will be switched (which is valid since if $e$ is greater than the current max, it must be the max of that subtree), and we will then recursively call \textbf{trickleUp()}. Since there is one less element to be recursed upon, by the inductive hypothesis we can assume that trickleUp() will be correct, since the size of the heap that is analyzed will be at least $n-1$. This is because we are only analyzing from $e$ up to the root node.\\
+Therefore, trickleUp() must be correct.\\\\
+Now, we will prove the correctness of \textbf{trickleDown():}\\
 \textbf{Base case:}\\
 Let us examine a heap of size 1:\\
 The element will not have any children, and so it will return, which is correct. Thus, our base case is valid.
 \textbf{Inductive step:}\\
 Now, we will examine a heap of size $n>1$, where $e$ is not a leaf node.\\
-First, we will find which of the children is the smallest (or the only leaf, if there is only one). This is because if we are to switch spots with the smallest of the two children, we know that the new "min" value will be correct. Then, if the current node is smaller than one of its children, we swap it with the smallest of the two. Then, we call \textbf{bubbleDown()} again, which by the inductive hypothesis, must correctly bubble the element down to its correct position in the heap.\\\\
+First, we will find which of the children is the smallest (or the only leaf, if there is only one). This is because if we are to switch spots with the smallest of the two children, we know that the new "min" value will be correct. Then, if the current node is smaller than one of its children, we swap it with the smallest of the two. Then, we call \textbf{trickleDown()} again, which by the inductive hypothesis, must correctly trickle the element down to its correct position in the heap.\\\\
 Now, we can finally prove the correctness of the full algorithm:\\
-First, we replace $e$ with the last element in the tree. This means the element we wanted to delete is now gone, and since we removed the last element, there is no issue with the structure of the tree. This new element may be in the wrong position though. This is fixed by the following \textbf{if-statement}, as if it belongs in a higher position it will be bubbled up, and if it belongs in a lower position, it will be bubbled down. Due to the fact that we have already proven the correctness of these functions, we know that our code must be correct.\\\\
+First, we replace $e$ with the last element in the tree. This means the element we wanted to delete is now gone, and since we removed the last element, there is no issue with the structure of the tree. This new element may be in the wrong position though. This is fixed by the following \textbf{if-statement}, as if it belongs in a higher position it will be trickled up, and if it belongs in a lower position, it will be trickled down. Due to the fact that we have already proven the correctness of these functions, we know that our code must be correct.\\\\
 \textbf{Runtime analysis:}\\
 The first line simply replaces a value, which is $O(1)$.\\
-Next, either of the bubbleUp or bubbleDown fucntions will be called. These functions work by doing a $O(1)$ operation, and recursively either going up or down a level in the heap. This means that since the depth of the heap is $\lceil log(n)\rceil$, the maximum amount of work done will be $O(log(n))$. Therefore, the total amount of work for \textvf{DeleteAnyElement()} must be at most $O(log(n))
+Next, either of the trickleUp or trickleDown fucntions will be called. These functions work by doing a $O(1)$ operation, and recursively either going up or down a level in the heap. This means that since the depth of the heap is $\lceil log(n)\rceil$, the maximum amount of work done will be $O(log(n))$. Therefore, the total amount of work for \textvf{DeleteAnyElement()} must be at most $O(log(n))$
 \end{question}
 
 
