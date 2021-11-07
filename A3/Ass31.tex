@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{fancybox} 
+\usepackage{amssymb}
+\usepackage{charter}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\setlength{\textwidth}{7in}
+\setlength{\evensidemargin}{-0.24in}
+\setlength{\oddsidemargin}{-0.24in}
+\setlength{\textheight}{9.45in}
+\setlength{\topmargin}{-0.45in}
+\setlength{\parindent}{0.3in}
+\headheight12pt
+\headsep16pt
+\pagestyle{myheadings}
+\newcounter{ques}
+\newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
+
+\begin{document} 
+
+\begin{center} \large\bf
+COMP 3804/MATH 3804\\
+Design and Analysis of Algorithms I  - 
+Fall  2021\\
+Assignment 3
+\end{center} 
+
+Hand in your assignments on, or before 
+Nov $14^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+typically posing (correctness, complexity and improvement potential).
+The faster your 
+algorithm, the better your mark.     \\
+
+\vspace{1em} 
+
+\begin{question}[5 points]\\
+Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why don't we just "scale everything up" by adding to each edge-weight: one plus  the absolute value of the globally smallest (negative) weight. This way, all weights are positive. Does the algorithm, when applied to the modified graph,  correctly compute the shortest path in the orginal graph? If so, give a proof;   if not, give a counter-example.
+    
+\end{question} 
+
+\begin{question}[20 points]\\ 
+ Let us assume that we have a directed graph G =(V,E) with $|V|$  = $n$ nodes of which there are $k$ starting nodes from which we would like to know their shortest path distances to a common destination node (many-to-one problem).  
+ 
+ \begin{itemize}
+ 	\item We could solve the problem by applying Dijkstra's algorithm $k$ times, ones for each of the $k$ starting nodes. What is the time  complexity (stated in terms of $n$ and $k$)? 
+ 	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)
+ \end{itemize}
+\end{question} 
+
+\begin{question}[15 points]\\  
+	Suppose we want to compute the shortest path tree from node, A,  using Bellman-Ford for the graph shown below in Figure~\ref{fig:Bellman-Ford}. Show how Bellman-Ford would work on this graphs as input.
+
+\newpage
+\begin{figure}
+	\centerline{\resizebox{!}{0.45\textwidth}{\includegraphics{BellmanFord.pdf}}}
+	\caption{Input graphs for Question 3}
+	\label{fig:Bellman-Ford}
+\end{figure}
+
+ %~\ref{fig:Bellman-FordTable}
+\begin{figure}
+	\centerline{\resizebox{!}{0.3\textwidth}{\includegraphics{Bellman-FordTable.pdf}}}
+	\caption{Solution format for the graphs Figures 1  A,B}
+	\label{fig:Bellman-FordTable}
+\end{figure}
+\end{question} 
+
+\begin{question}[15 points]\\  
+Let $n$ be the number of vertices of a given triangulation of a convex polygon. 
+
+\begin{itemize}
+	\item How many triangles does the triangulation consist of? Prove your statement by induction on $n$.
+	\item Consider now the simplest algorithm for computing weighted shortest paths, as described in class which places the same number of Steinerpoints on each edge of the triangulation.   Assume that we place, say 7 Steinerpoints,  on each edge of the triangulation. Precisely, how many edges does the algorithm add? Argue!
+	
+\end{itemize}
+
+
+\end{question} 
+
+\newpage
+
+
+\begin{question}[15 points]\\  
+Consider the graph given in Figure 3 above. 
+\begin{itemize}
+	\item Run DFS on the graph and classify each edge as being either: Tree edge, Forward edge, Back edge, or Cross edge. Show and argue: the algorithm execution,   pre(v) and post(v) time intervals and the edge-classification. (An edge type may or may not appear in a particular graph.)
+	\item Find a topological order of the nodes or argue that no such order can exist.
+\end{itemize}
+
+
+
+\begin{figure}
+	\centerline{\resizebox{!}{0.7\textwidth}{\includegraphics{DFSinput.pdf}}}
+	\caption{Input for DFS algorithm}
+	\label{fig:DFSinput}
+\end{figure}
+
+\end{question}
+\end{document} 
