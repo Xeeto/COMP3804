@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{fullpage}
-\usepackage{fancybox} 
+\usepackage{fancybox}
 \usepackage{amssymb}
 \usepackage{charter}
 \usepackage{verbatim}
@@ -18,38 +18,38 @@
 \newcounter{ques}
 \newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
 
-\begin{document} 
+\begin{document}
 
 \begin{center} \large\bf
 COMP 3804/MATH 3804\\
-Design and Analysis of Algorithms I  - 
+Design and Analysis of Algorithms I  -
 Fall  2021\\
 Assignment 3
-\end{center} 
+\end{center}
 
-Hand in your assignments on, or before 
-Nov $14^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+Hand in your assignments on, or before
+Nov $14^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are
 typically posing (correctness, complexity and improvement potential).
-The faster your 
+The faster your
 algorithm, the better your mark.     \\
 
-\vspace{1em} 
+\vspace{1em}
 
 \begin{question}[5 points]\\
 Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why don't we just "scale everything up" by adding to each edge-weight: one plus  the absolute value of the globally smallest (negative) weight. This way, all weights are positive. Does the algorithm, when applied to the modified graph,  correctly compute the shortest path in the orginal graph? If so, give a proof;   if not, give a counter-example.
-    
-\end{question} 
 
-\begin{question}[20 points]\\ 
- Let us assume that we have a directed graph G =(V,E) with $|V|$  = $n$ nodes of which there are $k$ starting nodes from which we would like to know their shortest path distances to a common destination node (many-to-one problem).  
- 
+\end{question}
+
+\begin{question}[20 points]\\
+ Let us assume that we have a directed graph G =(V,E) with $|V|$  = $n$ nodes of which there are $k$ starting nodes from which we would like to know their shortest path distances to a common destination node (many-to-one problem).
+
  \begin{itemize}
- 	\item We could solve the problem by applying Dijkstra's algorithm $k$ times, ones for each of the $k$ starting nodes. What is the time  complexity (stated in terms of $n$ and $k$)? 
+ 	\item We could solve the problem by applying Dijkstra's algorithm $k$ times, ones for each of the $k$ starting nodes. What is the time  complexity (stated in terms of $n$ and $k$)?
  	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)
  \end{itemize}
-\end{question} 
+\end{question}
 
-\begin{question}[15 points]\\  
+\begin{question}[15 points]\\
 	Suppose we want to compute the shortest path tree from node, A,  using Bellman-Ford for the graph shown below in Figure~\ref{fig:Bellman-Ford}. Show how Bellman-Ford would work on this graphs as input.
 
 \newpage
@@ -65,25 +65,86 @@ Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why d
 	\caption{Solution format for the graphs Figures 1  A,B}
 	\label{fig:Bellman-FordTable}
 \end{figure}
-\end{question} 
+\textbf{Answer for the graph of Figure A:}\\
+The edges we will analyze will be in the following order:
+$$(B, D), (B, E), (E, C), (C, B), (D, C), (A, D), (A, B)$$
+\begin{center}
+  \begin{tabular}{||c | c c c c c||}
+   \hline
+    step \# & A & B & C & D & E \\ [0.5ex]
+   \hline\hline
+   0 & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$\\
+   \hline
+   1 & 0 & $\infty$ & $\infty$ & 3/A & $\infty$\\
+   1 & 0 & 40/A & $\infty$ & 3/A & $\infty$\\
+   \hline
+   2 & 0 & 40/A & $\infty$ & 3/A & 35/B\\
+   2 & 0 & 40/A & 37/E & 3/A & 35/B\\
+   2 & 0 & 40/A & 2/D & 3/A & 35/B\\
+   \hline
+   3 & 0 & 12/C & 2/D & 3/A & 35/B\\
+   \hline
+   4 & 0 & 12/C & 2/D & 3/A & 7/B\\
+   \hline
+  \end{tabular}
+\end{center}
+And thus, since we have $|V|=5$ and we have executed the "loop" of the algorithm $|V|-1$ times, we have completed the first part of the algorithm. We can also notice that there are no negative cicles in this graph, and so it must be correct.\\\\
+\textbf{ADD IN THE ERROR-CHECKING PART OF THE CODE}\\\\
+We will now show our answer for Figure B:\\
+The edges we will analyze will be in the following order:
+$$(B, D), (B, E), (E, C), (C, B), (D, C), (D, A), (A, B)$$
+\begin{center}
+  \begin{tabular}{||c | c c c c c||}
+   \hline
+    step \# & A & B & C & D & E \\ [0.5ex]
+   \hline\hline
+   0 & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$\\
+   \hline
+   1 & 0 & -40/A & $\infty$ & $\infty$ & $\infty$\\
+   \hline
+   2 & 0 & -40/A & $\infty$ & -20/B & $\infty$\\
+   2 & 0 & -40/A & $\infty$ & -20/B & -45/B\\
+   2 & 0 & -40/A & -43/E & -20/B & -45/B\\
+   2 & -17/D & -40/A & -43/E & -20/B & -45/B\\
+   2 & -17/D & -57/A & -43/E & -20/B & -45/B\\
+   \hline
+   3 & -17/D & -57/A & -43/E & -37/B & -45/B\\
+   3 & -17/D & -57/A & -43/E & -37/B & -52/B\\
+   3 & -17/D & -57/A & -50/E & -37/B & -52/B\\
+   3 & -34/D & -57/A & -50/E & -37/B & -52/B\\
+   3 & -34/D & -74/A & -50/E & -37/B & -52/B\\
+   \hline
+   4 & -34/D & -74/A & -50/E & -54/B & -52/B\\
+   4 & -34/D & -74/A & -50/E & -54/B & -79/B\\
+   4 & -34/D & -74/A & -77/E & -54/B & -79/B\\
+   4 & -51/D & -74/A & -77/E & -54/B & -79/B\\
+   4 & -51/D & -91/A & -77/E & -54/B & -79/B\\
+   \hline
+  \end{tabular}
+\end{center}
+And thus, we have executed the loop of the algorithm  $|V-1|$ times. We must now execute the second loop of the algorithm, which checks for negative cycles.
+We will check the first edge: $(B,D)$.
+We can see that after our final execution of the code, $d[D] > D[B] + w(B,D)$ because $-54 > -91 + 20$. Therefore, the algorithm will return false due to the fact that there is a negative cycle.
 
-\begin{question}[15 points]\\  
-Let $n$ be the number of vertices of a given triangulation of a convex polygon. 
+\end{question}
+
+\begin{question}[15 points]\\
+Let $n$ be the number of vertices of a given triangulation of a convex polygon.
 
 \begin{itemize}
 	\item How many triangles does the triangulation consist of? Prove your statement by induction on $n$.
 	\item Consider now the simplest algorithm for computing weighted shortest paths, as described in class which places the same number of Steinerpoints on each edge of the triangulation.   Assume that we place, say 7 Steinerpoints,  on each edge of the triangulation. Precisely, how many edges does the algorithm add? Argue!
-	
+
 \end{itemize}
 
 
-\end{question} 
+\end{question}
 
 \newpage
 
 
-\begin{question}[15 points]\\  
-Consider the graph given in Figure 3 above. 
+\begin{question}[15 points]\\
+Consider the graph given in Figure 3 above.
 \begin{itemize}
 	\item Run DFS on the graph and classify each edge as being either: Tree edge, Forward edge, Back edge, or Cross edge. Show and argue: the algorithm execution,   pre(v) and post(v) time intervals and the edge-classification. (An edge type may or may not appear in a particular graph.)
 	\item Find a topological order of the nodes or argue that no such order can exist.
@@ -98,4 +159,4 @@ Consider the graph given in Figure 3 above.
 \end{figure}
 
 \end{question}
-\end{document} 
+\end{document}
