@@ -7,6 +7,8 @@
 \usepackage{verbatim}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
 \setlength{\textwidth}{7in}
 \setlength{\evensidemargin}{-0.24in}
 \setlength{\oddsidemargin}{-0.24in}
@@ -288,38 +290,58 @@ We will now run Kruskal's algorithm on the same graph.\\
 When we use this algorithm we want to have all of the edges sorted by weight. The sorted edges of our graph is as follows:
 $$1, 2, 3, 4, 6, 7, 7, 9, 11, 24, 38, 70, 80, 100$$
 The first edge we will look at is the one with a weight of $1$. Since it connects C and F, and they both have the same rank$=0$, we will arbitrarily choose $F$ as the representative of this tree. Thus, we now have a single directed tree like so:\\\\
-%image here
+\begin{center}
+\includegraphics[scale=0.5]{diagram1}
+\end{center}
 The disjoint data sets are now as follows:
 $$\{F,C\},\{A\},\{B\},\{D\},\{E\},\{G\},\{H\},\{I\}$$
 Next, the second edge we will examine is the one with a weight of $2$. Again, since it connects D and E, which both have a rank of 0, we will arbitraritly choose $E$ as the representative of this tree. Thus, we now have the two following directed trees:
-%image here
-The disjoint data sets are now as follows:
+\begin{center}
+\includegraphics[scale=0.5]{diagram2}
+\end{center}
+The disjoint data sets are now as follows:s
 $$\{F,C\},\{E,D\},\{A\},\{B\},\{G\},\{H\},\{I\}$$
 Next, we want to use the edge with a weight of $3$. We notice that this edge is connected to a vertex in the disjoint data set $\{F,C\}$, and so we want to merge the two of these together. Since $\{H\}$ has a rank of 0, whereas the parent of $\{F,C\}$ has a rank of 1, $H$ will be added eto the disjoint data set as follows:
-%image here
+\begin{center}
+\includegraphics[scale=0.5]{diagram3}
+\end{center}
 The current disjoint data sets are as follows:
-$$\{F,C,H\},\{E,D\},\{A\},\{B\},\{G\},\{I\}$$
-Next, we look at the edge with weight $4$. It is connected to both $D$ and $H$, which are in different distinct data sets. This means we can merge both of these, to create one larger data set. We will run the find() function on $D$ to find that the rank of its root node is 1, and we also run the same function on $H$ to find that the rank of its root node is also 1. This means that we can arbitrarily choose the tree containing $F$ to remain the "main" tree, where $F$ is the root node. The trees will now look as follows:
-%image here
+$$\{F,C,H\},\{E,D\},\{A\},\{B\},\{G\},\{I\}$$\\
+Next, we look at the edge with weight $4$. It is connected to both $D$ and $H$, which are in different distinct data sets. This means we can merge both of these, to create one larger data set. We will run the find() function on $D$ to find that the rank of its root node is 1, and we also run the same function on $H$ to find that the rank of its root node is also 1. This means that we can arbitrarily choose the tree containing $F$ to remain the "main" tree, where $F$ is the root node, and increase the rank by 1. The trees will now look as follows:
+\begin{center}
+\includegraphics[scale=0.5]{diagram4}
+\end{center}
+
+
 The current disjoint data sets are as follows:
 $$\{F,C,H,E,D\},\{A\},\{B\},\{G\},\{I\}$$
-Next, we look at the edge with weight 6. Since find(E)=find(F), we will not include this new edge in the MST and this it will not affect the disjoint sets. However, since we have called the "find" function, we will be using the trick we have learned in class. This trick will cause $E$ to be directly connected to the root node of the tree as follows:
-%image here
+Next, we look at the edge with weight 6. Since find(E)=find(F), we will not include this new edge in the MST and this it will not affect the disjoint sets. Additionlly, this will not cause the trick to occur, because the parent of E is already F.
+
 Next, we will look at the first edge of size 7. This edge will be the edge connecting C and E. Since both of their parents are the same, the disjoint sets will not change. Additionally, since the rank of the parent node (F) is 1, the "trick" will not change the structure of the tree.\\\\
-Next, we look at the other edge of weight 7. This edge is composed of $D$ and $G$. Since the parent of $D$ has a greater rank that the parent of $G$, it will be linked to the parent of $D$ in the graph structure, and added to the data set. An image of the graph is like so:
-% add image
+
+Next, we look at the other edge of weight 7. This edge is composed of $D$ and $G$. Since the parent of $D$ has a greater rank that the parent of $G$, it will be linked to the parent of $D$ in the graph structure, and added to the data set. Since find(D) is called, the "trick" will be used on D. After the trick is used during the find operation, $G$ will be added to the parent node of D, and the rank will be reduced by 1. An image of the graph is like so:
+\begin{center}
+\includegraphics[scale=0.5]{diagram5}
+\end{center}
+
 The current disjoint data sets are as follows:
 $$\{F,C,H,E,D,G\},\{A\},\{B\},\{I\}$$
-Next, we look at the edge of size $9$. Since again, the parent of $I$ is different from the parent of $G$, and we can see that the rank of the parent of $G$ is greater than the rank of the parent of $I$, we can add $I$ directly to the root node of $G$. The current graph will be as follows:
-%add image here
+Next, we look at the edge of weight $9$. Since again, the parent of $I$ is different from the parent of $G$, and we can see that the rank of the parent of $G$ is greater than the rank of the parent of $I$, we can add $I$ directly to the root node of $G$. The "trick" will not be used since the parent of $G$ is already the root node of $G$. The current graph will be as follows:
+\begin{center}
+\includegraphics[scale=0.5]{diagram6}
+\end{center}
 The current disjoint data sets are as follows:
 $$\{F,C,H,E,D,G,I\},\{A\},\{B\}$$
-Next, we will analyze the edge if weight 11. The parents of $B$ and $C$ are different, and the rank of the parent of $C$ is greater than the rank of the parent of $B$, so we can add $B$ directly to the root node of $C$. The graph will look as follows:
-% image here
+Next, we will analyze the edge if weight 11. The parents of $B$ and $C$ are different, and the rank of the parent of $C$ is greater than the rank of the parent of $B$, so we can add $B$ directly to the root node of $C$. Once again, the "trick" will not be used since the parent node of $C$ is the root node of its tree. The graph will look as follows:
+\begin{center}
+\includegraphics[scale=0.5]{diagram7}
+\end{center}
 The current disjoint data sets are as follows:
 $$\{F,C,H,E,D,G,I,B\},\{A\}$$
 Next, we analyze the edge of weight 24. The parents of $B$ and $A$ are different, and the rank of the parent of $B$ is greater than the rank of the parent of $A$, so we can add $A$ directly to the root node of $B$. The graph will look as follows:
-%image here
+\begin{center}
+\includegraphics[scale=0.5]{diagram8}
+\end{center}
 and the disjoin data sets are as follows:
 $$\{F,C,H,E,D,G,I,B,A\}$$
 Thus, since we now have all of the elements of the data set in a single set, it means the algorithm will now terminate.
