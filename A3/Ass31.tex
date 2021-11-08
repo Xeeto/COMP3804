@@ -88,8 +88,31 @@ $$(B, D), (B, E), (E, C), (C, B), (D, C), (A, D), (A, B)$$
    \hline
   \end{tabular}
 \end{center}
-And thus, since we have $|V|=5$ and we have executed the "loop" of the algorithm $|V|-1$ times, we have completed the first part of the algorithm. We can also notice that there are no negative cicles in this graph, and so it must be correct.\\\\
-\textbf{ADD IN THE ERROR-CHECKING PART OF THE CODE}\\\\
+And thus, since we have $|V|=5$ and we have executed the "loop" of the algorithm $|V|-1$ times, we have completed the first part of the algorithm.\\\\
+Now, we can do the second part of the algorithm, which checks for negative cycles.\\
+For each edge $(u,v)$ in $E$, we check if $d[v] > d[u] + w(u,v)$. So, we can show the following:
+\begin{center}
+  \begin{tabular}{||c|c|c|c||}
+   \hline
+    $(u,v)$ & $d[v]$ & $d[u] + (u,v)$ & cycle?\\ [0.5ex]
+   \hline\hline
+   $(B,D)$ & 3 & $12+20=31$ & no\\
+   \hline
+   $(B,E)$ & 7 & $12+(-4)=7$ & no\\
+   \hline
+   $(E,C)$ & 2 & $7+2=9$ & no\\
+   \hline
+   $(C,B)$ & 12 & $2+10=12$ & no\\
+   \hline
+   $(D,C)$ & 2 & $3+(-1)=2$ & no\\
+   \hline
+   $(A,D)$ & 3 & $0+3=3$ & no\\
+   \hline
+   $(A,B)$ & 12 & $0+40=40$ & no\\
+   \hline
+  \end{tabular}
+\end{center}
+Therefore, we know that there cannot be any negative cycles in the graph, and so the algorithm will return true.\\\\
 We will now show our answer for Figure B:\\
 The edges we will analyze will be in the following order:
 $$(B, D), (B, E), (E, C), (C, B), (D, C), (D, A), (A, B)$$
@@ -124,7 +147,7 @@ $$(B, D), (B, E), (E, C), (C, B), (D, C), (D, A), (A, B)$$
 \end{center}
 And thus, we have executed the loop of the algorithm  $|V-1|$ times. We must now execute the second loop of the algorithm, which checks for negative cycles.
 We will check the first edge: $(B,D)$.
-We can see that after our final execution of the code, $d[D] > D[B] + w(B,D)$ because $-54 > -91 + 20$. Therefore, the algorithm will return false due to the fact that there is a negative cycle.
+We can see that after our final execution of the code, $d[D] > d[B] + w(B,D)$ because $-54 > -91 + 20$. Therefore, the algorithm will return false due to the fact that there is a negative cycle.
 
 \end{question}
 
