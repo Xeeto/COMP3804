@@ -36,7 +36,20 @@ algorithm, the better your mark.     \\
 \vspace{1em}
 
 \begin{question}[5 points]\\
-Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why don't we just "scale everything up" by adding to each edge-weight: one plus  the absolute value of the globally smallest (negative) weight. This way, all weights are positive. Does the algorithm, when applied to the modified graph,  correctly compute the shortest path in the orginal graph? If so, give a proof;   if not, give a counter-example.
+Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why don't we just "scale everything up" by adding to each edge-weight: one plus  the absolute value of the globally smallest (negative) weight. This way, all weights are positive. Does the algorithm, when applied to the modified graph,  correctly compute the shortest path in the orginal graph? If so, give a proof;   if not, give a counter-example.\\\\
+
+Assume we are currently executing the algorithm, and the vertex that was just removed from $V$ and added to $S$ is $v$.\\\\
+Since we have just removed $v$ from $S$, we must assume that $d[v]=\delta(u,v)$, where $u$ is our "starting" node. However, assume there is a node $z$ that is connected to $v$, and  $d[v] > d[z] + w(z,v)$. Additionally, assume that if $(z,u)$ did not exist or its weight was positive, $\delta(u,z)>\delta(u,v)$.\\\\
+By these assumptions, we know that $v$ will be put into $s$ before $z$, and so we will not be able to "update" the value of $d[v]$ to include the path that considers going through $d[z]$ and using the negative edge $(u,v)$ in order to attain $d[v]$. This shows that the graph cannot handle negative edges. \textbf{However}, if we were to instead add one plus the absolute value of the globally smallest weight to all edges, we would know from our assumption that $\delta(u,z)>\delta(u,v)$ and so $w(z,v)$ would be irrelevant, as it cannot be negative and would not change our equality. Because $d[v]=\delta(u,v)$ when $v\in S$, we know that there could not be any other path which would be able to reach $v$ from $u$ with a lesser weight.\\\\
+Therefore, by adding the absolute value of the global minimum plus one to the weight of every edge, Dijkstra's algorthm would run properly.
+
+% if there is a negative that connects to $v$, then that means that we may be able to go through a node $z$
+%
+%  (one that is taken out of the set $V$ later), and then arrive at the same vertex while it being lesser than the value of $d[v]$. However, the algorithm does not allow for a change in $d[v]$ once $v\in S$, and so it will be invalid.\\\\
+% By adding the absolute value of the globally smallest edge weight +1, we are able to ensure that all weights are positive. This means that in our prior situation, we know that when $v$ is added to $S$, it must be the path with the smallest weight to $S$. Therefore, if we were to choose any other path, it would automatically be greater that $d[v]$, and so we will not care about its value, even if it is very small. because it is no longer negative, it would be impossible to have a case where a smaller path is found, after $v\in S$.
+
+
+
 
 \end{question}
 
