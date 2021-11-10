@@ -6,6 +6,11 @@
 \usepackage{charter}
 \usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+%\usepackage[noend]{algpseudocode}
 \setlength{\textwidth}{7in}
 \setlength{\evensidemargin}{-0.24in}
 \setlength{\oddsidemargin}{-0.24in}
@@ -57,8 +62,33 @@ Therefore, by adding the absolute value of the global minimum plus one to the we
  Let us assume that we have a directed graph G =(V,E) with $|V|$  = $n$ nodes of which there are $k$ starting nodes from which we would like to know their shortest path distances to a common destination node (many-to-one problem).
 
  \begin{itemize}
- 	\item We could solve the problem by applying Dijkstra's algorithm $k$ times, ones for each of the $k$ starting nodes. What is the time  complexity (stated in terms of $n$ and $k$)?
- 	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)
+ 	\item We could solve the problem by applying Dijkstra's algorithm $k$ times, ones for each of the $k$ starting nodes. What is the time  complexity (stated in terms of $n$ and $k$)?\\\\
+
+  We know from class that the algorithm will run in $O(|V|log|V|+|E|)$ time, where $|E|$ is the number of edges in the graph. We can bound $|E|$ by $n$, due to the fact that there is at most $n-1$ edges in any given graph. So, we know that each iteration of the algorithm will have a complexity of $O(nlogn+n-1)$. Since we will be running the algorithm $k$ times, this means the total time complexity of the algorithm will be $O(k\cdot(nlogn+n-1))$. Which, if we want to "simplify" it a bit more, could be written as $O(k\cdot nlogn)$.
+
+
+ 	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)\\\\
+
+  Instead of running the algorithm $k$ times, we could simply start from the destination node, (for the sake of avoiding confusion, we will switch their names - from now on, the "starting node" is the previous destination node, and the "destination nodes" are the $k$ nodes that were previously the starting nodes.) and execute the first part of the algorithm normally. \textbf{However}, instead of halting when it has found a "destination node", $n$, and keeps track of $d[n]$. This way, we will begin by keeping track of the weight of the path to the first node, and only follow subsequent paths if their current weights are lesser than $d[n]$. This way, we would be able to find the shortest path to done of the destination nodes without having to searach through paths with weights that would be too large.
+
+  \begin{algorithm}
+  \caption{Modified Dijkstra's algorithm}\label{euclid}
+  \begin{algorithmic}[1]
+  \State Initialize-Single source(G,s)
+  \State $S$ = empty set;
+  \State $Q=V$
+  \While {$Q\neq$ empty}
+    \State $u$ = delete\_min($Q$)
+    \State $S= S$ $U$ $\{u\}$
+    \ForAll {vertex $v$ in Adj[$u$]}
+      \State RELAX($u,v,w$)
+    \EndFor
+  \EndWhile
+  \end{algorithmic}
+  \end{algorithm}
+
+
+
  \end{itemize}
 \end{question}
 
