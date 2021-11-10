@@ -69,21 +69,32 @@ Therefore, by adding the absolute value of the global minimum plus one to the we
 
  	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)\\\\
 
-  Instead of running the algorithm $k$ times, we could simply start from the destination node, (for the sake of avoiding confusion, we will switch their names - from now on, the "starting node" is the previous destination node, and the "destination nodes" are the $k$ nodes that were previously the starting nodes.) and execute the first part of the algorithm normally. \textbf{However}, instead of halting when it has found a "destination node", $n$, and keeps track of $d[n]$. This way, we will begin by keeping track of the weight of the path to the first node, and only follow subsequent paths if their current weights are lesser than $d[n]$. This way, we would be able to find the shortest path to done of the destination nodes without having to searach through paths with weights that would be too large.
+  Instead of running the algorithm $k$ times, we could simply start from the destination node, (for the sake of avoiding confusion, we will switch their names - from now on, the "starting node" is the previous destination node, and the "destination nodes" are the $k$ nodes that were previously the starting nodes.) and execute the first part of the algorithm normally. \textbf{However}, instead of halting when it has found a "destination node", $n$, and keeps track of $d[n]$. This way, we will begin by keeping track of the weight of the path to the first node, and only follow subsequent paths if their current weights are lesser than $d[n]$. This way, we would be able to find the shortest path to done of the destination nodes without having to searach through paths with weights that would be too large.\\\\
+  In the following algorithm, $G$ is the graph, $s$ is the starting node, and $D$ is the set of destination nodes.\\
+  We will also choose to ignore paths of equal length, since we are only looking for a "shortest" path (so either one would do).
 
   \begin{algorithm}
   \caption{Modified Dijkstra's algorithm}\label{euclid}
   \begin{algorithmic}[1]
-  \State Initialize-Single source(G,s)
-  \State $S$ = empty set;
-  \State $Q=V$
-  \While {$Q\neq$ empty}
-    \State $u$ = delete\_min($Q$)
-    \State $S= S$ $U$ $\{u\}$
-    \ForAll {vertex $v$ in Adj[$u$]}
-      \State RELAX($u,v,w$)
-    \EndFor
-  \EndWhile
+  \Function{Dijkstra}{$G$,$w$,$s$,$D$}
+    \State Initialize-Single source($G$,$s$)
+    \State $c = \infty$
+    \State $S$ = empty set;
+    \State $Q=V$
+    \While {$Q\neq$ empty}
+      \State $u$ = delete\_min($Q$)
+      \If{$d[u]\geq d[c]$}
+        \State \Return
+      \EndIf
+      \State $S= S\cup\{u\}$
+      \If{$u\in D$ AND $d[u] < d[c]$}
+        \State $c = u$
+      \EndIf
+      \ForAll {vertex $v$ in Adj[$u$]}
+        \State RELAX($u,v,w$)
+      \EndFor
+    \EndWhile
+  \EndFunction
   \end{algorithmic}
   \end{algorithm}
 
