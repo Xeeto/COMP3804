@@ -3,12 +3,23 @@
 \usepackage{fullpage}
 \usepackage{fancybox}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{charter}
 \usepackage{verbatim}
 \usepackage{graphicx}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {./resources/} }
+
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\newcommand{\proofheader}[1]{\noindent \underline{#1}}
+\newcommand{\base}{\proofheader{\textbf{Base Case:  }}}
+\newcommand{\istep}{\proofheader{\textbf{Inductive Step: }}}
+
 \algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
 %\usepackage[noend]{algpseudocode}
 \setlength{\textwidth}{7in}
@@ -43,10 +54,12 @@ algorithm, the better your mark.     \\
 \begin{question}[5 points]\\
 Dijkstra's algorithm is not applicable  for negatively weighted edges. So, why don't we just "scale everything up" by adding to each edge-weight: one plus  the absolute value of the globally smallest (negative) weight. This way, all weights are positive. Does the algorithm, when applied to the modified graph,  correctly compute the shortest path in the orginal graph? If so, give a proof;   if not, give a counter-example.\\\\
 
+\begin{proof}
 Assume we are currently executing the algorithm, and the vertex that was just removed from $V$ and added to $S$ is $v$.\\\\
 Since we have just removed $v$ from $S$, we must assume that $d[v]=\delta(u,v)$, where $u$ is our "starting" node. However, assume there is a node $z$ that is connected to $v$, and  $d[v] > d[z] + w(z,v)$. Additionally, assume that if $(z,u)$ did not exist or its weight was positive, $\delta(u,z)>\delta(u,v)$.\\\\
 By these assumptions, we know that $v$ will be put into $s$ before $z$, and so we will not be able to "update" the value of $d[v]$ to include the path that considers going through $d[z]$ and using the negative edge $(u,v)$ in order to attain $d[v]$. This shows that the graph cannot handle negative edges. \textbf{However}, if we were to instead add one plus the absolute value of the globally smallest weight to all edges, we would know from our assumption that $\delta(u,z)>\delta(u,v)$ and so $w(z,v)$ would be irrelevant, as it cannot be negative and would not change our equality. Because $d[v]=\delta(u,v)$ when $v\in S$, we know that there could not be any other path which would be able to reach $v$ from $u$ with a lesser weight.\\\\
 Therefore, by adding the absolute value of the global minimum plus one to the weight of every edge, Dijkstra's algorthm would run properly.
+\end{proof}
 
 % if there is a negative that connects to $v$, then that means that we may be able to go through a node $z$
 %
@@ -70,25 +83,19 @@ Therefore, by adding the absolute value of the global minimum plus one to the we
  	\item Alternately, we could  start at the destination node and  somehow go backwards. Describe how this would work, i.e., how would we modify Dijkstra's algorithm and/or its input to achieve this?  Then, state the time complexity of this solution to our original problem. (Do not forget to argue why the algorithm, as modified, is correct!)\\\\
 
   Instead of running the algorithm $k$ times, we could simply start from the destination node, (for the sake of avoiding confusion, we will switch their names - from now on, the "starting node" is the previous destination node, and the "destination nodes" are the $k$ nodes that were previously the starting nodes.) and execute the first part of the algorithm normally. \textbf{However}, instead of halting when it has found a "destination node", $n$, and keeps track of $d[n]$. This way, we will begin by keeping track of the weight of the path to the first node, and only follow subsequent paths if their current weights are lesser than $d[n]$. This way, we would be able to find the shortest path to done of the destination nodes without having to searach through paths with weights that would be too large.\\\\
-  In the following algorithm, $G$ is the graph, $s$ is the starting node, and $D$ is the set of destination nodes.\\
-  We will also choose to ignore paths of equal length, since we are only looking for a "shortest" path (so either one would do).
-
+  In the following algorithm, $G$ is the graph, $s$ is the starting node, and $D$ is the set of destination nodes.
   \begin{algorithm}
   \caption{Modified Dijkstra's algorithm}\label{euclid}
   \begin{algorithmic}[1]
   \Function{Dijkstra}{$G$,$w$,$s$,$D$}
     \State Initialize-Single source($G$,$s$)
-    \State $c = \infty$
     \State $S$ = empty set;
     \State $Q=V$
     \While {$Q\neq$ empty}
       \State $u$ = delete\_min($Q$)
-      \If{$d[u]\geq d[c]$}
-        \State \Return
-      \EndIf
       \State $S= S\cup\{u\}$
-      \If{$u\in D$ AND $d[u] < d[c]$}
-        \State $c = u$
+      \If{$u\in D$}
+        \State \Return
       \EndIf
       \ForAll {vertex $v$ in Adj[$u$]}
         \State RELAX($u,v,w$)
@@ -97,12 +104,23 @@ Therefore, by adding the absolute value of the global minimum plus one to the we
   \EndFunction
   \end{algorithmic}
   \end{algorithm}
-
-
-
  \end{itemize}
 \end{question}
 
+\newpage
+This modified algorithm is extremely similar to the original one, except for the single if-statement. Therefore, in order to analyze the correctness as well as the time complexity, we must first make sure we understand the original algorithm.\\\\
+First, we initialize $S$ and $Q$. In the while loop, when we execute line 6 to delete the minumum element of $Q$, we know that whichever item was deleted has the shortest path from the starting node out of all of the nodes still in $Q$. Therefore, we check to see if it is in $D$. Since the $u$ that is removed from $Q$ on line 6 is the one with the current shortest path, we know that
+$$\forall v\in Q, \delta(s,v)>\delta(s,u)$$
+Thus, we know that
+$$u\in D \wedge u\in S \implies (\forall x\in D, x\neq u \implies \delta(s,x)>\delta(s,u))$$\\
+And therefore, the $u$ when we return will be the destination node with the shortest path out of all destination nodes.\\\\
+
+Now, we must complete the time complexity analysis.
+Since the only difference in the algorithm is the if statement, it will only add a constant amount of work to the total runtime, and so the worst-case runtime will remain $O(|V|log|V|+|E|)$, as a situation where the destination nodes have the paths with the greatest weights out of all of the other nodes in $Q$ may occur.
+
+%However, an interesting change may occur if we are allowed to assume that the weight of the paths are randomly distributed with all of the other paths in the graph. this means that if the graph has 9 total nodes and
+
+\newpage
 \begin{question}[15 points]\\
 	Suppose we want to compute the shortest path tree from node, A,  using Bellman-Ford for the graph shown below in Figure~\ref{fig:Bellman-Ford}. Show how Bellman-Ford would work on this graphs as input.
 
@@ -202,7 +220,7 @@ $$(B, D), (B, E), (E, C), (C, B), (D, C), (D, A), (A, B)$$
 And thus, we have executed the loop of the algorithm  $|V-1|$ times. We must now execute the second loop of the algorithm, which checks for negative cycles.
 We will check the first edge: $(B,D)$.
 We can see that after our final execution of the code, $d[D] > d[B] + w(B,D)$ because $-54 > -91 + 20$. Therefore, the algorithm will return false due to the fact that there is a negative cycle.
-
+\newpage
 \end{question}
 
 \begin{question}[15 points]\\
@@ -210,6 +228,23 @@ Let $n$ be the number of vertices of a given triangulation of a convex polygon.
 
 \begin{itemize}
 	\item How many triangles does the triangulation consist of? Prove your statement by induction on $n$.
+
+  \begin{proof}
+    We will inductively prove that the triangulation of a convex polygon consists of $n-2$ triangles.
+
+    \base $n=3$\\
+    In this case, the convex polygon is simply a triangle. Therefore, it will consist of a single triange. This follows with our rule that a convex polygon's triangulation will contain exactly $n-2$ triangles, and so the base case is verified.\\\\
+    \istep Assume $n\in\mathbb{N}, n>3$.\\
+    We can think of this situation as adding a vertex to a polygon of size $n-1$.\\
+    Because of the properties of a triangulation, when we "add" this vertex to the previous polygon, we can only have it so edges will be created between the new vertex, and two verticies of the polygon. This is because if we were to connect to three or more verticies, this would make it so that some verticies of the triangulation would no longer be a vertex of the convex polygon. Since this is a bit difficult to explain in words, we will show the following image:
+    \begin{center}
+      \includegraphics[scale=.5]{q4A}
+    \end{center}
+    Therefore, we can only add a vertex which will connect to two verticies from the convex polygon. When the new vertex is connected to the verticies of the previous polygon (we will aribitrarily call them $u$ and $v$, and call the "new" vertex $w$) it will create a new triangle, with edges $(u,v), (v,w), (w,u)$.\\
+    From this, we can see that the total amount of triangles will be the previous number of triangles, $+1$ when the new vertex is added. By the inductive hypothesis, we know that the triangulated convex polygon of size $n-1$ will have $(n-1)-2=n-3$ triangles, and so the total amount of triangles in the triangulated polygon of size $n$ will be $n-3+1=n-2$, and so our proof is valid.
+  \end{proof}
+
+
 	\item Consider now the simplest algorithm for computing weighted shortest paths, as described in class which places the same number of Steinerpoints on each edge of the triangulation.   Assume that we place, say 7 Steinerpoints,  on each edge of the triangulation. Precisely, how many edges does the algorithm add? Argue!
 
 \end{itemize}
