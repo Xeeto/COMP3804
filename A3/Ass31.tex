@@ -40,7 +40,8 @@
 COMP 3804/MATH 3804\\
 Design and Analysis of Algorithms I  -
 Fall  2021\\
-Assignment 3
+Assignment 3\\
+Félix Cardinal Tremblay - 101141593
 \end{center}
 
 Hand in your assignments on, or before
@@ -246,7 +247,7 @@ Let $n$ be the number of vertices of a given triangulation of a convex polygon.
 
 
 	\item Consider now the simplest algorithm for computing weighted shortest paths, as described in class which places the same number of Steinerpoints on each edge of the triangulation.   Assume that we place, say 7 Steinerpoints,  on each edge of the triangulation. Precisely, how many edges does the algorithm add? Argue!\\\\
-  When creating the triangulation with the Steinerpoints, we will assume there are three edges. The bottom (horizontal, flat) edge, the left edge, and the right edge. We will be explaining our answer by using the bottom edge as our "starting point". Using the bottom edge does not matter for the proof, as any edge could be used as the "starting" edge.\\
+  When creating the triangulation with the Steinerpoints, we will assume there are three edges. The bottom (horizontal, flat) edge, the left edge, and the right edge. We will be explaining our answer by arbitrarily using the bottom edge as our "starting point". Using the bottom edge does not matter for the proof, as any edge could be used as the "starting" edge.\\
   First, we look at the leftmost Steinerpoint on the bottom edge. When triangulating, it can connect to 7 of the Steinerpoints on the left edge to create 7 new edges. This means that we can create a total of $7\cdot 7$ edges between the Steinerpoints from the bottom edge to the left edge. Next, since no edges go from the left edge to the right edge, we can create another $7\cdot 7$ edges that go from the Steinerpoints on the left edge to the Steinerpoints on the right edge. Finally, since no edges go from the right edge to the bottom edge, we have another $7\cdot 7$ edges that can be created from the Steinerpoints on those two edges. This means that there will be $3\cdot 7^2$ edges created per triangle in the triangulation. Additionally, I have not shown the proof, but we can infer that if we were to add $k$ steinerpoints to each edge, there would be $3\cdot k^2$ edges.\\\\
   Since we have previously shown that there will be a total of $n-2$ triangles in the triangulation of a convex polygon (where $n$ is the number of edges of the convex polygon), we know that the algorithm will create a total of $(n-2)\cdot(3\cdot 7^2)$ new edges. Again, this was not fully proven, however it is interesting to see that if $k$ Steinerpoints were added to each edge, the algorithm would instead create $(n-2)\cdot(3\cdot k^2)$ edges.
 
@@ -261,8 +262,35 @@ Let $n$ be the number of vertices of a given triangulation of a convex polygon.
 \begin{question}[15 points]\\
 Consider the graph given in Figure 3 above.
 \begin{itemize}
-	\item Run DFS on the graph and classify each edge as being either: Tree edge, Forward edge, Back edge, or Cross edge. Show and argue: the algorithm execution,   pre(v) and post(v) time intervals and the edge-classification. (An edge type may or may not appear in a particular graph.)
-	\item Find a topological order of the nodes or argue that no such order can exist.
+	\item Run DFS on the graph and classify each edge as being either: Tree edge, Forward edge, Back edge, or Cross edge. Show and argue: the algorithm execution,   pre(v) and post(v) time intervals and the edge-classification. (An edge type may or may not appear in a particular graph.)\\\\
+  After DFS is run on the graph, the result will be the following:\\
+  \begin{center}
+    \includegraphics[scale=.7]{DFS diagram.png}
+  \end{center}
+  The following edges are tree edges, because pre($v$)$<$pre($u$)$<$post$(u)<$post$(v)$, and explore($u$) is called as a recursive call within explore($v$).\\\\
+  \begin{align*}
+    &(A,B):  1 < 2 < 11 < 14\\
+    &(A,F):  1 < 12 < 13 < 14\\
+    &(B,C):  2 < 3 < 10 < 11\\
+    &(C,D):  3 < 4 < 5 < 10\\
+    &(C,E):  3 < 6 < 9 < 10\\
+    &(E,G):  6 < 7 < 8 < 9\\
+  \end{align*}
+  Next, the following edges are forward edges. This is because $(v,u)$ is not a tree edge, and pre($v$)$<$pre($u$)$<$post$(u)<$post$(v)$.
+  \begin{align*}
+    &(B,E):  2 < 6 < 9 < 11\\
+    &(C,G):  3 < 7 < 8 < 10\\
+  \end{align*}
+  Next, the following edges are back edges. This is because $(v,u)$ is not a tree edge, and pre($u$)$<$pre($v$)$<$post$(v)<$post$(u)$.
+  \begin{align*}
+    &(D,A):  1 < 4 < 5 < 14\\
+    &(D,B):  2 < 4 < 5 < 11\\
+  \end{align*}
+  The cross edges are the remaining edges, so we have:
+  $(F,G)$, $(G,D)$, $(F,E)$
+
+	\item Find a topological order of the nodes or argue that no such order can exist.\\\\
+  There cannot be a topological order of the nodes. This is because to sort the a graph topologically, we would need to begin with a node that has in-degree=0. Since every node in the graph has in-degree of at least 1, we would not have a starting point, and would therefore not be able to execute the algorithm properly.
 \end{itemize}
 
 
