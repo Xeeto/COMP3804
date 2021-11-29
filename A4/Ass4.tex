@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{fancybox} 
+\usepackage{amssymb}
+\usepackage{charter}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{mathtools}
+\setlength{\textwidth}{7in}
+\setlength{\evensidemargin}{-0.24in}
+\setlength{\oddsidemargin}{-0.24in}
+\setlength{\textheight}{9.45in}
+\setlength{\topmargin}{-0.45in}
+\setlength{\parindent}{0.3in}
+\headheight12pt
+\headsep16pt
+\pagestyle{myheadings}
+\newcounter{ques}
+\newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
+
+\begin{document} 
+
+\begin{center} \large\bf
+COMP 3804/MATH 3804\\
+Design and Analysis of Algorithms I  - 
+Fall  2021\\
+Assignment 4
+\end{center} 
+
+Hand in your assignments on, or before 
+Dec $9^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+typically posing (correctness, complexity and improvement potential).
+The faster your 
+algorithm, the better your mark.     \\
+
+\vspace{1em} 
+
+\begin{question}[15 points]\\
+Covid is finally over and    you want to see your best friend. You want to meet your friend as soon as possible. Your friend lives in a different city. Both of you have cars and can start driving right now (after determining the meeting location). You drive on a road network, i..e, you have cities as vertices and two cities are connected via a directed edge if there is a road between them; the weight of the directed edge $(u,v)$ is the time it takes you to get from $u$ to $v$. How would you select the meeting  location (which must be a vertex of the graph) so that you can meet as soon as possible? Which algorithm would you use and how is this done most efficiently. The more efficient the solution, the better the mark.
+\end{question} 
+
+\begin{question}[15 points]\\ 
+  Assume that you have a directed graph G =(V,E) with $|V|$  = $n$ nodes and $|E|$ = $m$ edges. Again, this graph's nodes are cities, the edges  represent roads,  the weight on an edge $(u,v)$ is the time it takes you to travel from node $u$ to node $v$.  It turns out that there are no (directed) cycles in your particular graph.
+  You are interested in taking the longest possible drive (you will not be able to return to your starting point).
+  Describe a method to compute the longest drive in this graph. 
+
+\end{question} 
+
+\begin{question}[15 points]\\  
+	
+	Let $G =(V,E)$  be a DAG with vertex set,  $V$, and edge set $E$.  Someone gives you a permutation of the vertices and says that this is one of the possible outputs of a topological sort applied to $G$. How fast can you verify that this is true? State the algorithm and the time complexity.
+	
+	\end{question} 
+	
+	\begin{question}[15 points]\\  
+	
+	Let $G =(V,E)$  be a complete graph on $n$ vertices. Apply DFS to it and describe the intervals $[pre,post]$ for all nodes. Are there back-edges? Are there cross-edges?
+	
+	\end{question} 
+	
+	\begin{question}[15 points]\\  
+	
+	You are running Dijkstra's algorithm on a directed graph $G =(V,E)$. While Dijkstra's algorithm is executing you realize that a new edge $(u,v)$ should be added to the graph. Vertex $u$ has already been removed from the priority queue, PQ, maintained by Dijkstra's algorithm. Vertex $v$ has no other incoming edge than from $u$. In PQ,   you still see a vertex $w$ with $cost(u,w) <  cost(u,v)$. I now claim that it is ok to add the
+	$(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?
+	
+	\end{question} 
+	
+	\begin{question}[15 points]\\  
+Consider the following linear program.
+\begin{align*}
+ & \text{minimize} & 2x_1+3x_2& \\
+ & \text{subject to} & x_1+1.5x_2\leq 12\\
+ &                   & x_1-x_2\leq 3.5\\
+ &                   & x_2\leq 3\\
+ &                   & x_1, x_2\geq 0.
+\end{align*}
+\begin{itemize}
+    \item Show the feasible region by plotting the constraints on the $(x_1,x_2)$-Cartesian coordinate system.
+    \item Using your feasible region, find the optimal solution for this linear program. Is this the only solution? If yes, then explain why. If no, then state how many optimal solutions are there and justify your answer.
+\end{itemize}
+
+\end{question} 
+\begin{center}
+{\bf End of Assignment}
+\end{center}
+
+\end{document} 
