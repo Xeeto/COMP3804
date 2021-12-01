@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{fullpage}
-\usepackage{fancybox} 
+\usepackage{fancybox}
 \usepackage{amssymb}
 \usepackage{charter}
 \usepackage{verbatim}
@@ -21,54 +21,120 @@
 \newcounter{ques}
 \newenvironment{question}{\stepcounter{ques}{\noindent\bf Question \arabic{ques}:}}{\vspace{5mm}}
 
-\begin{document} 
+\begin{document}
 
 \begin{center} \large\bf
 COMP 3804/MATH 3804\\
-Design and Analysis of Algorithms I  - 
+Design and Analysis of Algorithms I  -
 Fall  2021\\
 Assignment 4
-\end{center} 
+\end{center}
 
-Hand in your assignments on, or before 
-Dec $9^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are 
+Hand in your assignments on, or before
+Dec $9^{th}$ 23:59. No late assignment will be accepted. Your assignment should be submitted online on Brightspace as a single .pdf file.  The filename should contain your name and student number. No late assignments will be accepted.You can type your assignment or you can upload a scanned copy of it.  Please, use a good image capturing device. Make sure that your upload is clearly readable. If it is difficult to read, it will not be graded. Whenever you are designing an algorithm you must address the three questions we are
 typically posing (correctness, complexity and improvement potential).
-The faster your 
+The faster your
 algorithm, the better your mark.     \\
 
-\vspace{1em} 
+\vspace{1em}
 
 \begin{question}[15 points]\\
-Covid is finally over and    you want to see your best friend. You want to meet your friend as soon as possible. Your friend lives in a different city. Both of you have cars and can start driving right now (after determining the meeting location). You drive on a road network, i..e, you have cities as vertices and two cities are connected via a directed edge if there is a road between them; the weight of the directed edge $(u,v)$ is the time it takes you to get from $u$ to $v$. How would you select the meeting  location (which must be a vertex of the graph) so that you can meet as soon as possible? Which algorithm would you use and how is this done most efficiently. The more efficient the solution, the better the mark.
-\end{question} 
+Covid is finally over and    you want to see your best friend. You want to meet your friend as soon as possible. Your friend lives in a different city. Both of you have cars and can start driving right now (after determining the meeting location). You drive on a road network, i..e, you have cities as vertices and two cities are connected via a directed edge if there is a road between them; the weight of the directed edge $(u,v)$ is the time it takes you to get from $u$ to $v$. How would you select the meeting  location (which must be a vertex of the graph) so that you can meet as soon as possible? Which algorithm would you use and how is this done most efficiently. The more efficient the solution, the better the mark.\\\\
+First, we will arbitrarily denote the city I live in as the node $u$, and the city my friends lives in as node $v$. We will run Dijkstra on the graph in the following way:
+\begin{itemize}
+  \item the weight of each path will be calculated and stored.
+  \item the algorithm will execute twice, once calculating all shortest paths in the graph from $v$ to every other node, and another time calculating the shortest paths from $u$ to every other node.
+  \item Then, we do the following: find $w(u,a)$ for an arbitrary node $a\in G$. We will calculate $w(u,a)+w(v,a)$, and then do the same thing for every other pair of paths in the graph.
+  \item Then, the pair of paths that have the smallest sum of weights will be paths that both go to the node that should be the city where my friend and I should meet.
+\end{itemize}
+We will begin by going through our modifications to the algorithm, to show that it will correctly find the city that will allow my friend and I to meet as soon as possible.\\
+First, the weight of the path is calculated and stored. This will save some time later on, and will allow us to compare the total weights of paths.\\\\
+Next, we are calculating all of the shortest paths starting from $u$, and from $v$. This is a costly step in terms of runtime, however it helps explain the correctness quite easily. By doing this step, we will have two dictionaries: the key will be the destination node, and the value will be the weight from $u$ or $v$ to that node (as calculated in the first step). Therefore, we will be able to easily access the weight from both starting nodes to a candidate destination node.\\\\
+Finally, we will go through both dictionaries, and compare the sum of the weights. For example, we will calculate $w(u,a) +w(v,a)$, and then compare it to $w(u,b)+w(v,b)$, and so on. At the end, we will return the node for which the sum of the weights of the two paths is the smallest, which means it will be the city for which my friend and I can meet as soon as possible.\\\\
 
-\begin{question}[15 points]\\ 
+Next, we will look at the runtime of this algorithm.
+We know that Dijkstra already runs in $O(|V|log(|V|)+|E|)$. Since our first step is in constant time and it will occur at most once per node, per node (in the (impossible, but for the sake of an upper bound) case that the shortest path for each node must go through every node) and so we know that this addition to the algorithm will add a maximum of $O(|V|^2)$ work to the algorithm.\\\\
+Our next addition to the algorithm will cause the following change to the worst-case runtime: first, we must multiply it by $|V|$ since we will be calculating the shortest path to every node, and then multiply it by 2 because we are executing it once for $u$, and once for $v$. Therefore our current worst-case runtime including the previous step would be $O(|V|^2\cdot log(|V|)+|E|+|V|^2)$\\\\
+Then, our third step will go through the list of weights for each path. since there will be $2n$ paths, and we are doing a constant amount of work for each path, this will add $O(n)$ work to our total, and therefore can be omitted.\\\\
+Therefore, our total time complexity can be reduced to
+$$O(|V|^2\cdot log(|V|))$$
+
+
+
+\end{question}
+
+\begin{question}[15 points]\\
   Assume that you have a directed graph G =(V,E) with $|V|$  = $n$ nodes and $|E|$ = $m$ edges. Again, this graph's nodes are cities, the edges  represent roads,  the weight on an edge $(u,v)$ is the time it takes you to travel from node $u$ to node $v$.  It turns out that there are no (directed) cycles in your particular graph.
   You are interested in taking the longest possible drive (you will not be able to return to your starting point).
-  Describe a method to compute the longest drive in this graph. 
+  Describe a method to compute the longest drive in this graph.\\\\
 
-\end{question} 
+  In order to complete this question, we will heavily base our answer off of the bellman-ford shortest path algorithm, except that instead of looking for the shortest path, we will be looking for the longest path.\\\\
 
-\begin{question}[15 points]\\  
-	
+  We will assume there is a topological order to the graph. This topological order can be arbitrary, however it is important for the way the algorithm executes.
+
+  First, we will have it so the d-value in every node will be $-\infty$ instead of $\infty$, due to the fact that we are trying to find the longest path, instead of the shortest path.\\\\
+
+  Next, we will initialize our single source. This will make it so our starting node will start with a d-value of 0.\\\\
+
+  Then, we will begin with the first loop of the algorithm:\\
+  \begin{verbatim}
+    For each vertex in $G$: (going by the topological order)\\
+      For each edge in the current vertex:
+        Relax(u,v,w)
+
+    *Note: We will edit the relax function in order to find the longest path.
+     As a secondary note, there is usually a second loop in the algorithm that
+     checks to see if there is a cycle, but by the definition of the question we
+     can assume that the input graph is graph with no cycles, and so the extra
+     loop is unnecessary.
+
+    Relax(u,v,w):
+      if d[v] < d[u] + w(u,v)
+        then:
+          d[v] = d[u] + w(u,v)
+          pi[v] = u
+
+    (I was unable to get the pi symbol in the verbatim environment for latex)
+  \end{verbatim}
+
+  As we can see, the code is almost the exact same as the code for the bellman-ford algorithm we have learned in class, except for three things:
+  \begin{enumerate}
+    \li the non-starting nodes are set to $-\infty$ instead of $\infty$
+    \li we have removed the loop which checks for cycles after the algorithm is complete, because we know that the graph has no cycles
+    \li in the relax method, we have changed the if statement from "d[v] $>$ d[u] + w(u,v)" to "d[v] $<$ d[u] + w(u,v)", meaning that the path's total weight will only be updated if there is a edge to that node which increases the total value of the path.
+  \end{enumerate}
+
+  Due to our familiarity with bellman ford's shortest path algorithm, it is quite trivial to see why these modifications would allow us to find the longest path in the graph. As the algorithm executes, through every loop we will be updating the current longest path to the vertex, using the relax function. Once this has been completed, all we must do is go through the vertices, and find the one with the greatest value. Due to the fact that we can find the previous node by simply doing $\pi [v]$, the information for the longest path is already in the node with the greatest d-value. Therefore, this modified bellman-ford's algorithm will find the last node in the longest path in the graph (and that node will contain the information required for the entire path).
+
+  % We will begin by setting the d-values inside all of the nodes to $0$, including our starting node. This is because since the value of the starting node may be updated later on (for example, if there is a path that leads to that node which will increase the total distance of the trip), and instead of being attracted to the nodes will have the lowest d-values, we are instead interested with the nodes with the greatest d-values.
+  %
+  % SINCE THERE ARE NO CYCLES IN THIS GRAPH, THERE MUST BE AT LEAST ONE NODE THAT HAS NO PREVIOUS NODES. WE WILL ARBITRARILY PICK ONE OF THESE NODES AS OUR STARTING POINT.
+  %
+  %
+  % (might have to check nodes backwards? in the case that there is a node with no previous path that is longer)
+
+\end{question}
+
+\begin{question}[15 points]\\
+
 	Let $G =(V,E)$  be a DAG with vertex set,  $V$, and edge set $E$.  Someone gives you a permutation of the vertices and says that this is one of the possible outputs of a topological sort applied to $G$. How fast can you verify that this is true? State the algorithm and the time complexity.
-	
-	\end{question} 
-	
-	\begin{question}[15 points]\\  
-	
+
+	\end{question}
+
+	\begin{question}[15 points]\\
+
 	Let $G =(V,E)$  be a complete graph on $n$ vertices. Apply DFS to it and describe the intervals $[pre,post]$ for all nodes. Are there back-edges? Are there cross-edges?
-	
-	\end{question} 
-	
-	\begin{question}[15 points]\\  
-	
+
+	\end{question}
+
+	\begin{question}[15 points]\\
+
 	You are running Dijkstra's algorithm on a directed graph $G =(V,E)$. While Dijkstra's algorithm is executing you realize that a new edge $(u,v)$ should be added to the graph. Vertex $u$ has already been removed from the priority queue, PQ, maintained by Dijkstra's algorithm. Vertex $v$ has no other incoming edge than from $u$. In PQ,   you still see a vertex $w$ with $cost(u,w) <  cost(u,v)$. I now claim that it is ok to add the
 	$(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?
-	
-	\end{question} 
-	
-	\begin{question}[15 points]\\  
+
+	\end{question}
+
+	\begin{question}[15 points]\\
 Consider the following linear program.
 \begin{align*}
  & \text{minimize} & 2x_1+3x_2& \\
@@ -82,9 +148,9 @@ Consider the following linear program.
     \item Using your feasible region, find the optimal solution for this linear program. Is this the only solution? If yes, then explain why. If no, then state how many optimal solutions are there and justify your answer.
 \end{itemize}
 
-\end{question} 
+\end{question}
 \begin{center}
 {\bf End of Assignment}
 \end{center}
 
-\end{document} 
+\end{document}
