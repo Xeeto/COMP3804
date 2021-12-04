@@ -158,7 +158,10 @@ $$O(|V|^2\cdot log(|V|))$$
 	\begin{question}[15 points]\\
 
 	You are running Dijkstra's algorithm on a directed graph $G =(V,E)$. While Dijkstra's algorithm is executing you realize that a new edge $(u,v)$ should be added to the graph. Vertex $u$ has already been removed from the priority queue, PQ, maintained by Dijkstra's algorithm. Vertex $v$ has no other incoming edge than from $u$. In PQ,   you still see a vertex $w$ with $cost(u,w) <  cost(u,v)$. I now claim that it is ok to add the
-	 $(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?
+	 $(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?\\\\
+
+  The priority queue will contain pairs, containing the values $(d[x], x)$ for a vertex $x\in V$. Since we know that the vertex $u$ has just been removed from the graph (since $w$ is still in the PQ), we know that $d[u]=\delta[u]$. Therefore, since we want to calculate $d[v]$ in order to add $v$ to the priority queue, we can see that $d[v] = d[u] + w(u,v)$, so the pair we would be adding to the PQ would be $(d[u]+w(u,v),v)$, meaning that the priority value would be $(d[u]+w(u,v),v)$.\\\\
+  Now that we know the value, we need to find out where this pair would be added in the PQ. Since $cost(u,w)<cost(u,v)$, this means that we can simply insert $v$ in the PQ after $w$, as the PQ checks the edges outgoing from $u$ in order of smallest to largest, and so since $w$ is still in the PQ, it has not been "checked" yet. Therefore, if we were to add $v$ after $w$, the PQ would be in the proper order, and the algorithm would still execute correctly.
 
 	\end{question}
 
