@@ -74,7 +74,9 @@ $$O(|V|^2\cdot log(|V|))$$
 
   First, we will have it so the d-value in every node will be $-\infty$ instead of $\infty$, due to the fact that we are trying to find the longest path, instead of the shortest path.\\\\
 
-  Next, we will initialize our single source. This will make it so our starting node will start with a d-value of 0.\\\\
+  Next, isntead of initializing a \textit{single} source, we will go through all of the vertices, checking the number of in-degrees. If a node has in-degrees$=0$, then that node must be included in the search for the longest path. So, instead of sedding the d-value of that node to $-\infty$, we will set it to $0$. This will make it so that instead of being ignored due to not being the "starting" node, the algorithm will still consider paths that may not be accessible from the starting node, because of the fact that this graph is directed and acyclic.
+
+  \\\\
 
   Then, we will begin with the first loop of the algorithm:\\
   \begin{verbatim}
@@ -98,11 +100,11 @@ $$O(|V|^2\cdot log(|V|))$$
   \end{verbatim}
 
   As we can see, the code is almost the exact same as the code for the bellman-ford algorithm we have learned in class, except for three things:
-  \begin{enumerate}
-    \li the non-starting nodes are set to $-\infty$ instead of $\infty$
-    \li we have removed the loop which checks for cycles after the algorithm is complete, because we know that the graph has no cycles
-    \li in the relax method, we have changed the if statement from "d[v] $>$ d[u] + w(u,v)" to "d[v] $<$ d[u] + w(u,v)", meaning that the path's total weight will only be updated if there is a edge to that node which increases the total value of the path.
-  \end{enumerate}
+  \begin{itemize}
+    \item the non-starting nodes are set to $-\infty$ instead of $\infty$
+    \item we have removed the loop which checks for cycles after the algorithm is complete, because we know that the graph has no cycles
+    \item in the relax method, we have changed the if statement from "d[v] $>$ d[u] + w(u,v)" to "d[v] $<$ d[u] + w(u,v)", meaning that the path's total weight will only be updated if there is a edge to that node which increases the total value of the path.
+  \end{itemize}
 
   Due to our familiarity with bellman ford's shortest path algorithm, it is quite trivial to see why these modifications would allow us to find the longest path in the graph. As the algorithm executes, through every loop we will be updating the current longest path to the vertex, using the relax function. Once this has been completed, all we must do is go through the vertices, and find the one with the greatest value. Due to the fact that we can find the previous node by simply doing $\pi [v]$, the information for the longest path is already in the node with the greatest d-value. Therefore, this modified bellman-ford's algorithm will find the last node in the longest path in the graph (and that node will contain the information required for the entire path).
 
@@ -117,20 +119,46 @@ $$O(|V|^2\cdot log(|V|))$$
 
 \begin{question}[15 points]\\
 
-	Let $G =(V,E)$  be a DAG with vertex set,  $V$, and edge set $E$.  Someone gives you a permutation of the vertices and says that this is one of the possible outputs of a topological sort applied to $G$. How fast can you verify that this is true? State the algorithm and the time complexity.
+	Let $G =(V,E)$  be a DAG with vertex set,  $V$, and edge set $E$.  Someone gives you a permutation of the vertices and says that this is one of the possible outputs of a topological sort applied to $G$. How fast can you verify that this is true? State the algorithm and the time complexity.\\\\
+
+  We will heavily base our answer off of the topological sorting algorithm we have learned in class.\\\\
+  Let $S$ denote a list containing the permutation
+  The algorithm executes as follows:
+  \begin{enumerate}
+    \item $k=1$
+    \item check if the vertex $S[k-1]$ currently has in-degree = 0. If it doesn't, the permutation that was given is wrong, and the algorithm returns false. If it is present, let $u$ represent that vertex, and increment $k$ by one.
+    \item remove $u$ from the graph, and if the graph is non-empty and we have not reached the end of $S$, re-execute the previous step of the algorithm.
+    \item If the algorithm is able to loop through every node in $S$ without returning early, this means that the given permutation is a valid topological sorting of the nodes in $G$.
+  \end{enumerate}
+
+  The reason there can be multiple possible topological sorting orders is because there can be more than one vertex with in-degree 0 at a time. By checking that the $n^{th}$ vertex in $S$ must be one of the options for the $n^{th}$ vertex, we know that the current order of the given permutation will always be correct, up to the $n^{th}$ vertex. Therefore, if the algorithm is able to execute without returning early, we know that the given permutation will be fully correct.\\\\
+
+  As for runtime, this algorithm will run in $O(|V| + |E|)$. This is because our first step will execute in $O(1)$, then we simply check for the in-degree, delete a node, and increment $k$. \\
+  We know that the delete operation will result in at most $O(|E|)$ work, because if we are to remove every node in $G$, we will need to remove every edge as well. Additionally, we will be chekcing the in-degree and incrementing $k$ at most $O(|V|)$ times (as well as deleting nodes $O(|V|)$ times), since the loop will continue through all of the nodes in $G$ as long as it does not exit early.\\
+  Therefore, our final time complexity will be $O(|V| + |E|)$.
 
 	\end{question}
 
 	\begin{question}[15 points]\\
 
-	Let $G =(V,E)$  be a complete graph on $n$ vertices. Apply DFS to it and describe the intervals $[pre,post]$ for all nodes. Are there back-edges? Are there cross-edges?
+	Let $G =(V,E)$  be a complete graph on $n$ vertices. Apply DFS to it and describe the intervals $[pre,post]$ for all nodes. Are there back-edges? Are there cross-edges?\\\\
+
+  Since this is a complete graph, we know that each node will be connected to every other node in the graph. Thereore, if we choose an arbitrary node as our starting point, all of those nodes will contain a tree edge to another node, except for the $nth$ node. This means that if we only look at tree edges, the resulting dfs tree will seem like a straight line. We will assume that this tree which looks like a straight line has already been created, meaning that each node has been visited at least once. Thus, once we reach the $nth$ node, all of the nodes will already have been visited. Since the $nth$ node is connected to every other node in the graph, we know that every other node has already been visited, and that the pre value is lesser, and that the post value will be greater. Therefore, every other edge from $n$ to any other node (excluding the tree edges that are already present) will be a back edge. So, the $nth$ node will have $n-2$ back edges (since the edge connecting itself with the $n-1th$ node will be a tree node). Additionally, as we go back up, we can see that this pattern will repeat itself. Each node will be connected by back edges to the nodes to which they are not connected to by tree edges.\\
+  Thus, all nodes (except the first and last nodes to be visited) will be connected to two other nodes by tree edges, and connected to the rest of the nodes in the tree by back edges. The first and last nodes to be visited will only be connected to one node by a tree edge, and the rest by back edges.\\\\
+  Because a cross edge requires two nodes to be in seperate "branches" of a depth-first search tree, there cannot be any cross edges due to the fact that ourt depth-first search tree only has a straight, single branch.\\\\
+
+  Because the algorithm will essentially go down a straight line giving the nodes pre values, and go back up that line, increasing the post values by one each time, we know the following:
+  \begin{enumerate}
+    \item The pre value of the $ith$ node to be explored will be $i$ (starting at 1)
+    \item the post value of the $ith$ node to be explored will be $2n-i+1$.
+  \end{enumerate}
 
 	\end{question}
 
 	\begin{question}[15 points]\\
 
 	You are running Dijkstra's algorithm on a directed graph $G =(V,E)$. While Dijkstra's algorithm is executing you realize that a new edge $(u,v)$ should be added to the graph. Vertex $u$ has already been removed from the priority queue, PQ, maintained by Dijkstra's algorithm. Vertex $v$ has no other incoming edge than from $u$. In PQ,   you still see a vertex $w$ with $cost(u,w) <  cost(u,v)$. I now claim that it is ok to add the
-	$(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?
+	 $(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?
 
 	\end{question}
 
