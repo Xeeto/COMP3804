@@ -9,6 +9,12 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{tikz}
 \usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{amsthm}
+
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\graphicspath{ {./resources/} }
 \setlength{\textwidth}{7in}
 \setlength{\evensidemargin}{-0.24in}
 \setlength{\oddsidemargin}{-0.24in}
@@ -74,9 +80,9 @@ $$O(|V|^2\cdot log(|V|))$$
 
   First, we will have it so the d-value in every node will be $-\infty$ instead of $\infty$, due to the fact that we are trying to find the longest path, instead of the shortest path.\\\\
 
-  Next, isntead of initializing a \textit{single} source, we will go through all of the vertices, checking the number of in-degrees. If a node has in-degrees$=0$, then that node must be included in the search for the longest path. So, instead of sedding the d-value of that node to $-\infty$, we will set it to $0$. This will make it so that instead of being ignored due to not being the "starting" node, the algorithm will still consider paths that may not be accessible from the starting node, because of the fact that this graph is directed and acyclic.
+  Next, isntead of initializing a \textit{single} source, we will go through all of the vertices, checking the number of in-degrees. If a node has in-degrees$=0$, then that node must be included in the search for the longest path. So, instead of sedding the d-value of that node to $-\infty$, we will set it to $0$. This will make it so that instead of being ignored due to not being the "starting" node, the algorithm will still consider paths that may not be accessible from the starting node, because of the fact that this graph is directed and acyclic.\\\\
 
-  \\\\
+
 
   Then, we will begin with the first loop of the algorithm:\\
   \begin{verbatim}
@@ -161,7 +167,7 @@ $$O(|V|^2\cdot log(|V|))$$
 	 $(u,v)$ without creating errors. We only have to put it  into the PQ. Which priority value should $v$ have in the PQ? Why would this work?\\\\
 
   The priority queue will contain pairs, containing the values $(d[x], x)$ for a vertex $x\in V$. Since we know that the vertex $u$ has just been removed from the graph (since $w$ is still in the PQ), we know that $d[u]=\delta[u]$. Therefore, since we want to calculate $d[v]$ in order to add $v$ to the priority queue, we can see that $d[v] = d[u] + w(u,v)$, so the pair we would be adding to the PQ would be $(d[u]+w(u,v),v)$, meaning that the priority value would be $(d[u]+w(u,v),v)$.\\\\
-  Now that we know the value, we need to find out where this pair would be added in the PQ. Since $cost(u,w)<cost(u,v)$, this means that we can simply insert $v$ in the PQ after $w$, as the PQ checks the edges outgoing from $u$ in order of smallest to largest, and so since $w$ is still in the PQ, it has not been "checked" yet. Therefore, if we were to add $v$ after $w$, the PQ would be in the proper order, and the algorithm would still execute correctly.
+  Now that we know the value, we need to find out where this pair would be added in the PQ. Since $cost(u,w)<cost(u,v)$, this means that we can simply insert $v$ in the PQ after $w$, as the PQ checks the edges outgoing from $u$ in order of smallest to largest, and so since $w$ is still in the PQ, it has not been "checked" yet. Therefore, we would need to insert $v$ in a position after $w$, where its priority value would be greater than or equal to the value before it, but lesser than or equal the value after it. this would cause the PQ would be in the proper order, and the algorithm would still execute correctly.
 
 	\end{question}
 
@@ -178,6 +184,22 @@ Consider the following linear program.
     \item Show the feasible region by plotting the constraints on the $(x_1,x_2)$-Cartesian coordinate system.
     \item Using your feasible region, find the optimal solution for this linear program. Is this the only solution? If yes, then explain why. If no, then state how many optimal solutions are there and justify your answer.
 \end{itemize}
+The following is our possible region, based on the constraints. We have combined $x_2\geq 0$ and $x_2\leq3$ into one constraint, for the sake of clarity.\\
+\begin{center}
+\includegraphics[scale=0.5]{q6_region.png}\\
+\end{center}
+Assume that for the contraints, $x$ is $x_1$ and $y$ is $x_2$.The area contained by the points denoted in the image is the region in which our $x_1,x_2$ values can reside.\\\\
+To find our optimal solution, we must utilise the function we are given, that is $2x_1+3x_1$, and minimize the output.\\\\
+Going by common sense, we can see that our minimum will most likely be the leftmost point of the polygon, $(0,0)$, which by plugging into our equation, we obtain $2(0)+3(0)=0$. We will now show that this must be the minimum of the linear program, according to its constraints:
+
+\begin{proof}
+  Let $n,m\in\mathbb{R}$, such that $(n,m)$ is a point in the region specified by the linear program's constraints, and $(n,m)\neq (0,0)$. Because our new point must be in the specified region, we have two cases: either $n>0$, or $m>0$.\\\\
+  \textbf{Case 1:} $n>0$\\
+  If $n>0$, we know that $2(n)>0$, and therefore $2(n)+3(m)>0$, meaning that this point would not be the optimal solution for the linear program.\\\\
+  \textbf{Case 2:} $m>0$\\
+  If $m>0$, we know that $3(m)>0$, and therefore $2(n)+3(m)>0$, meaning that this point would not be the optimal solution for the linear program.\\\\
+  Therefore, the minimum of the equation $2x_1+3x_2$ must be $(0,0)$, given the constraints listed.
+\end{proof}
 
 \end{question}
 \begin{center}
